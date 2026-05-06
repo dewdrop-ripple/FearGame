@@ -16,6 +16,7 @@ public class SC_FearData : MonoBehaviour
         CATEGELOPHOBIA,
         INSECTOPHOBIA,
         PYROPHOBIA,
-        NUMBER_OF_FEARS
+        NUMBER_OF_FEARS,
+        SAFE
     }
 }

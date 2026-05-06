@@ -42,17 +42,16 @@ public class SC_PlayerMovement : MonoBehaviour
     private float mMidpoint = 0.7f;
 
     // Game manager for character data
-    private SC_GameManager mGameManager;
     private SC_CharacterDataManager mCharacterManager;
+    private SC_PlayerData mPlayerData;
 
 
     // ----- FUNCTIONS ----- //
 
     private void Start()
     {
-        mGameManager = FindAnyObjectByType<SC_GameManager>();
         mCharacterManager = FindAnyObjectByType<SC_CharacterDataManager>();
-        UpdateCharacterData();
+        mPlayerData = GetComponent<SC_PlayerData>();
 
         // Find attached camera
         foreach (Transform findObj in this.transform)
@@ -70,9 +69,8 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void UpdateCharacterData()
     {
-        SC_CharacterData characterData = mCharacterManager.GetCharacterData(mGameManager.GetCurrentCharacter());
+        mWalkSpeed = mPlayerData.GetSpeed();
 
-        mWalkSpeed = characterData.GetSpeed();
         mSprintSpeed = mWalkSpeed * mCharacterManager.GetSprintSpeedMultiplier();
         mCrouchSpeed = mWalkSpeed * mCharacterManager.GetCrouchSpeedMultiplier();
 
@@ -85,6 +83,8 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        UpdateCharacterData();
+
         if (mCanMove)
         {
             Move();

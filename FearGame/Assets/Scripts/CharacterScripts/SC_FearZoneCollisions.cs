@@ -1,0 +1,54 @@
+using UnityEngine;
+
+public class SC_FearZoneCollisions : MonoBehaviour
+{
+    // ----- VARIABLES ----- //
+
+    private const string M_TARGET_TAG = "AdrenalineEffectZone";
+
+    // The amount of time it takes for adrenaline to change by one fear point at base
+    private const float M_ADRENALINE_DROP_TIME = 30;
+    private const float M_SAFE_ZONE_VALUE = -10;
+
+    private SC_PlayerData mPlayerData;
+
+
+    // ----- FUNCTIONS ----- //
+
+    private void Start()
+    {
+        mPlayerData = GetComponent<SC_PlayerData>();
+    }
+
+    private void Update()
+    {
+        float currentAdrenaline = mPlayerData.GetAdrenaline();
+        float adrenalineChange = (1 / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
+
+        mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == M_TARGET_TAG)
+        {
+            SC_FearData.FearType zoneType = other.GetComponent<SC_ZoneData>().GetFearType();
+
+            float adrenalineEffect;
+
+            if (zoneType == SC_FearData.FearType.SAFE)
+            {
+                adrenalineEffect = M_SAFE_ZONE_VALUE;
+            }
+            else 
+            {
+                adrenalineEffect = mPlayerData.GetFearValue(zoneType);
+            }
+
+            float currentAdrenaline = mPlayerData.GetAdrenaline();
+            float adrenalineChange = (adrenalineEffect / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
+
+            mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
+        }
+    }
+}

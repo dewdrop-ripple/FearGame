@@ -216,8 +216,8 @@ public class SC_CharacterData : MonoBehaviour
     // Sets how afraid the character is of a certain fear
     public void SetFearValue(FearType fear, float fearValue)
     {
-        const float MAXIMUM = -5.0f;
-        const float MINIMUM = 5.0f;
+        const float MAXIMUM = 5.0f;
+        const float MINIMUM = -5.0f;
 
         mFearList[(int) fear] = fearValue;
 
