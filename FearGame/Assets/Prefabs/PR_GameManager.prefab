@@ -68,7 +68,7 @@ MonoBehaviour:
   mBaseViewSensitivity: 1000
   mBaseRotationSpeed: 40
   mBaseHungerDrain: 10
-  mHungerHealthDrain: 5
+  mHungerHealthDrain: -20
   mHungerAdrenalineDrain: 5
   mHungerAdrenalineThreshhold: 75
   mEatAdrenalineChange: -10

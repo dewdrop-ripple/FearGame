@@ -20,6 +20,7 @@ public class SC_CharacterStartButton : MonoBehaviour
     public void ButtonClicked()
     {
         mGameManager.SetCurrentCharacter(mCharacterPanel.GetTargetCharacter());
+        mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
         SceneManager.LoadScene(mNextSceneName);
     }
 }

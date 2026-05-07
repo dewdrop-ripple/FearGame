@@ -4,7 +4,17 @@ public class SC_GameManager : MonoBehaviour
 {
     // ----- VARIABLES ----- //
 
+    public enum GameState
+    {
+        MENU,
+        INVENTORY,
+        PAUSED,
+        PLAYING
+    }
+
     private SC_CharacterDataManager.CharacterName mCurrentCharacter = SC_CharacterDataManager.CharacterName.LILLIAN;
+
+    private GameState mCurrentGameState = GameState.MENU;
 
 
     // ----- FUNCTIONS ----- //
@@ -31,5 +41,15 @@ public class SC_GameManager : MonoBehaviour
     public SC_CharacterDataManager.CharacterName GetCurrentCharacter()
     {
         return mCurrentCharacter;
+    }
+
+    public GameState GetGameState()
+    {
+        return mCurrentGameState;
+    }
+
+    public void SetGameState(GameState newState)
+    {
+        mCurrentGameState = newState;
     }
 }

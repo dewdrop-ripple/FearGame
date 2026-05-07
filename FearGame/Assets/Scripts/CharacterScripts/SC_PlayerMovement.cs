@@ -41,7 +41,11 @@ public class SC_PlayerMovement : MonoBehaviour
 
     // Game manager for character data
     private SC_CharacterDataManager mCharacterManager;
+    private SC_GameManager mGameManager;
     private SC_PlayerData mPlayerData;
+
+    // Used for inventory and pausing
+    private bool mIsPaused = false;
 
 
     // ----- FUNCTIONS ----- //
@@ -49,6 +53,7 @@ public class SC_PlayerMovement : MonoBehaviour
     private void Start()
     {
         mCharacterManager = FindAnyObjectByType<SC_CharacterDataManager>();
+        mGameManager = FindAnyObjectByType<SC_GameManager>();
         mPlayerData = GetComponent<SC_PlayerData>();
 
         // Find attached camera
@@ -65,7 +70,7 @@ public class SC_PlayerMovement : MonoBehaviour
         mTargetHeight = mOriginalHeight;
         mBaseCameraHeight = mMainCamera.transform.position.y;
         mTargetCameraHeight = mBaseCameraHeight;
-        Cursor.visible = false;
+
         LockCursor(); // Lock cursor after game start
     }
 
@@ -85,24 +90,70 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        UpdateCharacterData();
-
-        Move();
-
-        if (mCanMouseRotate)
+        if (!mIsPaused)
         {
-            View();
+            UpdateCharacterData();
+
+            Move();
+
+            if (mCanMouseRotate)
+            {
+                View();
+            }
+
+            if (mCharacterController.height == 1.0f)
+            {
+                CheckObstaclesAbove();
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                mTargeter.CollectTargeted();
+            }
         }
 
-        if (mCharacterController.height == 1.0f)
+        // Inventory and pause menus
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CheckObstaclesAbove();
+            if (mGameManager.GetGameState() == SC_GameManager.GameState.INVENTORY)
+            {
+                SetPaused(false);
+                mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
+            }
+            else
+            {
+                SetPaused(!mIsPaused);
+
+                if (mIsPaused)
+                {
+                    mGameManager.SetGameState(SC_GameManager.GameState.PAUSED);
+                }
+                else
+                {
+                    mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
+                }
+            }
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("Collect");
-            mTargeter.CollectTargeted();
+            if (mGameManager.GetGameState() == SC_GameManager.GameState.PAUSED)
+            {
+                
+            }
+            else
+            {
+                SetPaused(!mIsPaused);
+
+                if (mIsPaused)
+                {
+                    mGameManager.SetGameState(SC_GameManager.GameState.INVENTORY);
+                }
+                else
+                {
+                    mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
+                }
+            }
         }
     }
 
@@ -120,23 +171,20 @@ public class SC_PlayerMovement : MonoBehaviour
 
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                mTargetHeight = mOriginalHeight - 1;
-                mTargetCameraHeight = mBaseCameraHeight - 1;
+                mCharacterController.height = mOriginalHeight - 1;
+                mMainCamera.transform.position = new Vector3(mMainCamera.transform.position.x,
+                                            mBaseCameraHeight - 1,
+                                            mMainCamera.transform.position.z);
+                mCharacterController.Move(new Vector3(0, -0.5f, 0));
                 mIsCrouched = true;
             }
-            else
+            else if (mCanStandUp)
             {
-                mTargetHeight = mOriginalHeight; // Set the target standing height
-                mTargetCameraHeight = mBaseCameraHeight;
-                mIsCrouched = false;
-            }
-
-            if (mCharacterController.height != mTargetHeight)
-            {
-                mCharacterController.height = mTargetHeight;
+                mCharacterController.height = mOriginalHeight; // Set the target standing height
                 mMainCamera.transform.position = new Vector3(mMainCamera.transform.position.x,
-                                            mTargetCameraHeight,
+                                            mBaseCameraHeight,
                                             mMainCamera.transform.position.z);
+                mIsCrouched = false;
             }
 
             if (Input.GetKey(KeyCode.LeftShift) && mCanSprint && !mIsCrouched)
@@ -223,5 +271,19 @@ public class SC_PlayerMovement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void SetPaused(bool paused)
+    {
+        mIsPaused = paused;
+
+        if (mIsPaused)
+        {
+            UnlockCursor();
+        }
+        else
+        {
+            LockCursor();
+        }
     }
 }

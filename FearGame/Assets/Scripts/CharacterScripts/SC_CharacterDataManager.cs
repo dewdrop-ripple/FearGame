@@ -307,7 +307,7 @@ public class SC_CharacterDataManager : MonoBehaviour
 
     public float GetHungerHealthDrain()
     {
-        return mHungerAdrenalineThreshhold;
+        return mHungerHealthDrain;
     }
 
     public float GetHungerAdrenalineDrain()
