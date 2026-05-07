@@ -7,6 +7,7 @@ public class SC_PlayerMovement : MonoBehaviour
 
     [SerializeField] private Camera mMainCamera;
     [SerializeField] private CharacterController mCharacterController;
+    [SerializeField] private SC_CheckCollect mTargeter;
 
     private float mWalkSpeed;
     private float mSprintSpeed;
@@ -96,6 +97,12 @@ public class SC_PlayerMovement : MonoBehaviour
         if (mCharacterController.height == 1.0f)
         {
             CheckObstaclesAbove();
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            Debug.Log("Collect");
+            mTargeter.CollectTargeted();
         }
     }
 
