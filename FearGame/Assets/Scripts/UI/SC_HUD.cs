@@ -25,8 +25,8 @@ public class SC_HUD : MonoBehaviour
 
     private void Update()
     {
-        mHungerSlider.value = mPlayerData.GetHungerLeft();
-        mAdrenalineSlider.value = mPlayerData.GetAdrenaline();
+        mHungerSlider.value = mHungerSlider.maxValue - mPlayerData.GetHunger();
+        mAdrenalineSlider.value = mAdrenalineSlider.maxValue - mPlayerData.GetAdrenaline();
         mHealthSlider.value = mPlayerData.GetHealth();
         mStaminaSlider.value = mPlayerData.GetStamina();
     }

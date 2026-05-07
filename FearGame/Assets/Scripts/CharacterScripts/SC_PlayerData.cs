@@ -36,7 +36,7 @@ public class SC_PlayerData : MonoBehaviour
     [SerializeField] private float mAdrenaline;
     [SerializeField] private float mHealth;
     [SerializeField] private float mStamina;
-    [SerializeField] private float mHungerLeft;
+    [SerializeField] private float mHunger;
 
     [SerializeField] int mNumberOfDeaths;
 
@@ -76,7 +76,7 @@ public class SC_PlayerData : MonoBehaviour
         mComfortUnderPressure = baseData.GetSanity();
         mMaxNumberOfDeaths = baseData.GetMaxDeaths();
 
-        mHungerLeft = 100;
+        mHunger = 0;
 
         mFearList = new float[(int) SC_FearData.FearType.NUMBER_OF_FEARS];
 
@@ -99,6 +99,17 @@ public class SC_PlayerData : MonoBehaviour
         mActualSpeed = (mSpeed - (((mSpeed - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
         mActualStealth = (mStealth - (((mStealth - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
         mActualResilience = (mResilience - (((mResilience - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
+
+        mHunger = mHunger + (((mCharacterManager.GetBaseHungerDrain() / 60) * Time.deltaTime) / adrenalineFactor);
+        if (mHunger >= 100)
+        {
+            mHunger = 100;
+            mHealth = mHealth + ((mCharacterManager.GetHungerHealthDrain() / 60) * Time.deltaTime);
+        }
+        if (mHunger < mCharacterManager.GetHungerAdrenalineThreshhold())
+        {
+            mAdrenaline = mAdrenaline + ((mCharacterManager.GetHungerAdrenalineDrain() / 60) * Time.deltaTime);
+        }
     }
 
 
@@ -189,24 +200,58 @@ public class SC_PlayerData : MonoBehaviour
         return mNumberOfDeaths;
     }
 
-    public float GetHungerLeft()
+    public float GetHunger()
     {
-        return mHungerLeft;
+        return mHunger;
     }
 
     public void SetHealth(float health)
     {
+        float oldHealth = mHealth;
+
         mHealth = health;
+
+        if (oldHealth > health)
+        {
+            mAdrenaline += mCharacterManager.GetHealAdrenalineChange();
+        }
+
+        if (mHealth < 0)
+        {
+            mHealth = 0;
+        }
+        else if (mHealth > mMaxHealth)
+        {
+            mHealth = mMaxHealth;
+        }
     }
 
     public void SetStamina(float stamina)
     {
         mStamina = stamina;
+
+        if (mStamina < 0)
+        {
+            mStamina = 0;
+        }
+        else if (mStamina > mMaxStamina)
+        {
+            mStamina = mMaxStamina;
+        }
     }
 
     public void SetAdrenaline(float adrenaline)
     {
         mAdrenaline = adrenaline;
+
+        if (mAdrenaline < 0)
+        {
+            mAdrenaline = 0;
+        }
+        else if (mAdrenaline > 100)
+        {
+            mAdrenaline = 100;
+        }
     }
 
     public void SetNumDeaths(int deaths)
@@ -214,8 +259,24 @@ public class SC_PlayerData : MonoBehaviour
         mNumberOfDeaths = deaths;
     }
 
-    public void SetHungerLeft(float hungerLeft)
+    public void SetHunger(float hunger)
     {
-        mHungerLeft = hungerLeft;
+        float oldHunger = mHunger;
+
+        mHunger = hunger;
+
+        if (oldHunger < hunger)
+        {
+            mAdrenaline += mCharacterManager.GetEatAdrenalineChange();
+        }
+
+        if (mHunger < 0)
+        {
+            mHunger = 0;
+        }
+        else if (mHunger > 100)
+        {
+            mHunger = 100;
+        }
     }
 }

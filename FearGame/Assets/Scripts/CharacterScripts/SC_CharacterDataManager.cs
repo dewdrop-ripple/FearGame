@@ -39,6 +39,14 @@ public class SC_CharacterDataManager : MonoBehaviour
     [SerializeField] private float mBaseViewSensitivity;
     [SerializeField] private float mBaseRotationSpeed;
 
+    [SerializeField] private float mBaseHungerDrain;
+    [SerializeField] private float mHungerHealthDrain;
+    [SerializeField] private float mHungerAdrenalineDrain;
+    [SerializeField] private float mHungerAdrenalineThreshhold;
+
+    [SerializeField] private float mEatAdrenalineChange;
+    [SerializeField] private float mHealAdrenalineChange;
+
 
     // ----- FUNCTIONS ----- //
 
@@ -290,5 +298,35 @@ public class SC_CharacterDataManager : MonoBehaviour
     public float GetBaseRotationSpeed()
     {
         return mBaseRotationSpeed;
+    }
+
+    public float GetBaseHungerDrain()
+    {
+        return mBaseHungerDrain;
+    }
+
+    public float GetHungerHealthDrain()
+    {
+        return mHungerAdrenalineThreshhold;
+    }
+
+    public float GetHungerAdrenalineDrain()
+    {
+        return mHungerAdrenalineDrain;
+    }
+
+    public float GetHungerAdrenalineThreshhold()
+    {
+        return mHungerAdrenalineThreshhold;
+    }
+
+    public float GetEatAdrenalineChange()
+    {
+        return mEatAdrenalineChange;
+    }
+
+    public float GetHealAdrenalineChange()
+    {
+        return mHealAdrenalineChange;
     }
 }

@@ -7,8 +7,9 @@ public class SC_FearZoneCollisions : MonoBehaviour
     private const string M_TARGET_TAG = "AdrenalineEffectZone";
 
     // The amount of time it takes for adrenaline to change by one fear point at base
-    private const float M_ADRENALINE_DROP_TIME = 30;
+    private const float M_ADRENALINE_DROP_TIME = 20;
     private const float M_SAFE_ZONE_VALUE = -10;
+    private const float M_NEAR_PLAYER_ZONE_VALUE = M_SAFE_ZONE_VALUE / 2;
 
     private SC_PlayerData mPlayerData;
 
@@ -39,6 +40,10 @@ public class SC_FearZoneCollisions : MonoBehaviour
             if (zoneType == SC_FearData.FearType.SAFE)
             {
                 adrenalineEffect = M_SAFE_ZONE_VALUE;
+            }
+            else if (zoneType == SC_FearData.FearType.NEAR_PLAYER)
+            {
+                adrenalineEffect = M_NEAR_PLAYER_ZONE_VALUE;
             }
             else 
             {

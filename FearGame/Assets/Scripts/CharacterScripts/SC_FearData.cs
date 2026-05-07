@@ -17,6 +17,7 @@ public class SC_FearData : MonoBehaviour
         INSECTOPHOBIA,
         PYROPHOBIA,
         NUMBER_OF_FEARS,
-        SAFE
+        SAFE,
+        NEAR_PLAYER
     }
 }

@@ -57,7 +57,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2222168aa79688b41b928575c7efd38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_CharacterDataManager
-  mBaseAdrenaline: 25
+  mCharacterList: []
+  mBaseAdrenaline: 0
   mSprintSpeedMultiplier: 3
   mCrouchSpeedMultiplier: 0.3
   mBaseSprintStaminaDrain: 1
@@ -66,3 +67,9 @@ MonoBehaviour:
   mBaseGravity: 10
   mBaseViewSensitivity: 1000
   mBaseRotationSpeed: 40
+  mBaseHungerDrain: 10
+  mHungerHealthDrain: 5
+  mHungerAdrenalineDrain: 5
+  mHungerAdrenalineThreshhold: 75
+  mEatAdrenalineChange: -10
+  mHealAdrenalineChange: -10

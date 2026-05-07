@@ -21,6 +21,9 @@ public class SC_PlayerMovement : MonoBehaviour
     private bool mCanMouseRotate = true;
     private bool mCanMove = true;
     private bool mCanSprint = true;
+    private bool mIsCrouched = false;
+    private float mBaseCameraHeight;
+    private float mTargetCameraHeight;
 
     private float mOriginalHeight;
     private float mTargetHeight;
@@ -34,12 +37,6 @@ public class SC_PlayerMovement : MonoBehaviour
     // New variables for jumping
     private float mJumpForce;
     private bool mIsGrounded;
-
-    private float mTimer = 0.0f;
-    [SerializeField] private float mBobbingSpeed = 0.24f;
-    [SerializeField] private float mBobbingAmount = 0.06f;
-    private float mBobbingAmountMultiplier = 0.5f;
-    private float mMidpoint = 0.7f;
 
     // Game manager for character data
     private SC_CharacterDataManager mCharacterManager;
@@ -63,6 +60,10 @@ public class SC_PlayerMovement : MonoBehaviour
         }
 
         mCharacterController = transform.GetComponent<CharacterController>();
+        mOriginalHeight = mCharacterController.height;
+        mTargetHeight = mOriginalHeight;
+        mBaseCameraHeight = mMainCamera.transform.position.y;
+        mTargetCameraHeight = mBaseCameraHeight;
         Cursor.visible = false;
         LockCursor(); // Lock cursor after game start
     }
@@ -85,12 +86,9 @@ public class SC_PlayerMovement : MonoBehaviour
     {
         UpdateCharacterData();
 
-        if (mCanMove)
-        {
-            Move();
-        }
+        Move();
 
-        if (mCanMouseRotate && !Input.GetKey(KeyCode.R))
+        if (mCanMouseRotate)
         {
             View();
         }
@@ -103,7 +101,6 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        RaycastHit hit;
         mActualHorizontalSpeed = ((new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(mPreviousPosition.x, 0f, mPreviousPosition.z)).magnitude) / Time.deltaTime;
         mActualSpeed = ((transform.position - mPreviousPosition).magnitude) / Time.deltaTime;
         mPreviousPosition = transform.position;
@@ -114,29 +111,28 @@ public class SC_PlayerMovement : MonoBehaviour
             mMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             mMoveDirection = transform.TransformDirection(mMoveDirection);
 
-            if (mActualHorizontalSpeed > 0.5f)
+            if (Input.GetKey(KeyCode.LeftControl))
             {
-                ViewHeadBobbing();
+                mTargetHeight = mOriginalHeight - 1;
+                mTargetCameraHeight = mBaseCameraHeight - 1;
+                mIsCrouched = true;
+            }
+            else
+            {
+                mTargetHeight = mOriginalHeight; // Set the target standing height
+                mTargetCameraHeight = mBaseCameraHeight;
+                mIsCrouched = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (mCharacterController.height != mTargetHeight)
             {
-                if (mCharacterController.height == mOriginalHeight)
-                {
-                    mTargetHeight = mOriginalHeight - 1;
-                }
-                else
-                {
-                    if (mCanStandUp)
-                    {
-                        mTargetHeight = mOriginalHeight; // Set the target standing height
-                    }
-                }
-
-                StartCoroutine(ChangeHeightSmoothly());
+                mCharacterController.height = mTargetHeight;
+                mMainCamera.transform.position = new Vector3(mMainCamera.transform.position.x,
+                                            mTargetCameraHeight,
+                                            mMainCamera.transform.position.z);
             }
 
-            if (Input.GetKey(KeyCode.LeftShift) && mCanSprint)
+            if (Input.GetKey(KeyCode.LeftShift) && mCanSprint && !mIsCrouched)
             {
                 mIsRunning = true;
                 mMoveDirection *= mSprintSpeed;
@@ -144,23 +140,24 @@ public class SC_PlayerMovement : MonoBehaviour
             else
             {
                 mIsRunning = false;
-                mMoveDirection *= mWalkSpeed;
-            }
 
-            // Handle jumping
-            if (Input.GetKeyDown(KeyCode.Space) && mIsGrounded)
-            {
-                mMoveDirection.y = mJumpForce;
-                mIsGrounded = false; // Prevent multiple jumps
+                if (mIsCrouched)
+                {
+                    mMoveDirection *= mCrouchSpeed;
+                }
+                else
+                {
+                    mMoveDirection *= mWalkSpeed;
+                }
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                mTargetZRotation = -1.5f;
+                mTargetZRotation = -0.75f;
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                mTargetZRotation = 1.5f;
+                mTargetZRotation = 0.75f;
             }
             else if (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
             {
@@ -169,6 +166,13 @@ public class SC_PlayerMovement : MonoBehaviour
 
             mCurrentZRotation = Mathf.Lerp(mCurrentZRotation, mTargetZRotation, Time.deltaTime * mRotationSpeed);
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, mCurrentZRotation);
+        }
+
+        // Handle jumping
+        if (Input.GetKeyDown(KeyCode.Space) && mIsGrounded)
+        {
+            mMoveDirection.y = mJumpForce;
+            mIsGrounded = false;
         }
 
         // Apply gravity
@@ -190,21 +194,6 @@ public class SC_PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator ChangeHeightSmoothly()
-    {
-        float elapsedTime = 0f;
-        float startHeight = mCharacterController.height;
-
-        while (elapsedTime < 1.0f)
-        {
-            elapsedTime += Time.deltaTime * mCrouchSpeed;
-            mCharacterController.height = Mathf.Lerp(startHeight, mTargetHeight, elapsedTime);
-            yield return null;
-        }
-
-        mCharacterController.height = mTargetHeight;
-    }
-
     private void View()
     {
         float inputX = Input.GetAxis("Mouse X") * mViewSensitivity * Time.deltaTime;
@@ -215,45 +204,6 @@ public class SC_PlayerMovement : MonoBehaviour
 
         mMainCamera.transform.localRotation = Quaternion.Euler(mXRotation, 0f, 0f);
         transform.Rotate(Vector3.up * inputX);
-    }
-
-    private void ViewHeadBobbing()
-    {
-        float waveslice = 0.0f;
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)
-        {
-            mTimer = 0.0f;
-        }
-        else
-        {
-            waveslice = Mathf.Sin(mTimer);
-            mTimer += mBobbingSpeed * (Time.deltaTime * 60f);
-
-            if (mTimer > Mathf.PI * 2)
-            {
-                mTimer -= Mathf.PI * 2;
-            }
-        }
-
-        Vector3 v3T = mMainCamera.transform.localPosition;
-
-        if (waveslice != 0)
-        {
-            float translateChange = waveslice * (mBobbingAmount * (mBobbingAmountMultiplier * 0.1f));
-            float totalAxes = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
-            totalAxes = Mathf.Clamp(totalAxes, 0.0f, 1.0f);
-            translateChange = totalAxes * translateChange;
-            v3T.y = mMidpoint + translateChange;
-        }
-        else
-        {
-            v3T.y = mMidpoint;
-        }
-
-        mMainCamera.transform.localPosition = v3T;
     }
 
     private void LockCursor()
