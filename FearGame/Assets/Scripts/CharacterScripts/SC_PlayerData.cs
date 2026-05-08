@@ -3,6 +3,7 @@ using UnityEditor.Overlays;
 using UnityEngine;
 using static SC_CharacterData;
 using static SC_FearData;
+using static UnityEditor.Progress;
 
 public class SC_PlayerData : MonoBehaviour
 {
@@ -38,7 +39,10 @@ public class SC_PlayerData : MonoBehaviour
     [SerializeField] private float mStamina;
     [SerializeField] private float mHunger;
 
-    [SerializeField] int mNumberOfDeaths;
+    [SerializeField] private int mNumberOfDeaths;
+
+    // Inventory
+    [SerializeField] private SC_CharacterInventory mInventory;
 
 
     // ----- FUNCTIONS ----- //
@@ -211,7 +215,7 @@ public class SC_PlayerData : MonoBehaviour
 
         mHealth = health;
 
-        if (oldHealth > health)
+        if (oldHealth < health)
         {
             mAdrenaline += mCharacterManager.GetHealAdrenalineChange();
         }
@@ -265,7 +269,7 @@ public class SC_PlayerData : MonoBehaviour
 
         mHunger = hunger;
 
-        if (oldHunger < hunger)
+        if (oldHunger > hunger)
         {
             mAdrenaline += mCharacterManager.GetEatAdrenalineChange();
         }
@@ -279,4 +283,64 @@ public class SC_PlayerData : MonoBehaviour
             mHunger = 100;
         }
     }
+
+
+    // ----- INVENTORY FUNCTIONS ----- //
+
+    public bool AddItem(SC_Collectable item)
+    {
+        return mInventory.AddItem(item);
+    }
+
+    public void RemoveItem(SC_Collectable item)
+    {
+        mInventory.RemoveItem(item);
+    }
+
+    public void RemoveItem(int index)
+    {
+        mInventory.RemoveItem(index);
+    }
+
+    public void RemoveItemWithoutDestroying(SC_Collectable item)
+    {
+        mInventory.RemoveItemWithoutDestroying(item);
+    }
+
+    public void RemoveItemWithoutDestroying(int index)
+    {
+        mInventory.RemoveItem(index);
+    }
+
+    public SC_Collectable GetItem(int index)
+    {
+        return mInventory.GetItem(index);
+    }
+
+    public void UseItem(SC_Collectable item)
+    {
+        mInventory.UseItem(item);
+    }
+
+    public void UseItem(int index)
+    {
+        mInventory.UseItem(index);
+    }
+
+    public int GetNumItems()
+    {
+        return mInventory.GetNumItems();
+    }
+
+    public bool Contains(SC_Collectable.CollectableType itemType)
+    {
+        return mInventory.Contains(itemType);
+    }
+
+    /*
+    public void Sort()
+    {
+        mInventory.Sort();
+    }
+    */
 }
