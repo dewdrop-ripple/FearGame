@@ -109,6 +109,12 @@ public class SC_PlayerMovement : MonoBehaviour
             {
                 mTargeter.CollectTargeted();
             }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                float staminaDrain = mCharacterManager.GetBaseSprintStaminaDrain() * Time.deltaTime;
+                mPlayerData.SetStamina(mPlayerData.GetStamina() - staminaDrain);
+            }
         }
 
         // Inventory and pause menus
@@ -168,6 +174,15 @@ public class SC_PlayerMovement : MonoBehaviour
             mMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             mMoveDirection = transform.TransformDirection(mMoveDirection);
 
+            if (mPlayerData.GetStamina() > 0)
+            {
+                mCanSprint = true;
+            }
+            else
+            {
+                mCanSprint = false;
+            }
+
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 mCharacterController.height = mOriginalHeight - 1;
@@ -190,6 +205,9 @@ public class SC_PlayerMovement : MonoBehaviour
             {
                 mIsRunning = true;
                 mMoveDirection *= mSprintSpeed;
+
+              float staminaDrain = mCharacterManager.GetBaseSprintStaminaDrain() * Time.deltaTime;
+                mPlayerData.SetStamina(mPlayerData.GetStamina() - staminaDrain);  
             }
             else
             {
@@ -225,8 +243,12 @@ public class SC_PlayerMovement : MonoBehaviour
         // Handle jumping
         if (Input.GetKeyDown(KeyCode.Space) && mIsGrounded)
         {
-            mMoveDirection.y = mJumpForce;
-            mIsGrounded = false;
+            if (mPlayerData.GetStamina() >= mCharacterManager.GetBaseJumpStaminaDrain())
+            {
+                mMoveDirection.y = mJumpForce;
+                mIsGrounded = false;
+                mPlayerData.SetStamina(mPlayerData.GetStamina() - mCharacterManager.GetBaseJumpStaminaDrain());
+            }
         }
 
         // Apply gravity

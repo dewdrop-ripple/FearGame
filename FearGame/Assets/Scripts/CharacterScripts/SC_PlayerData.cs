@@ -107,9 +107,19 @@ public class SC_PlayerData : MonoBehaviour
             mHunger = 100;
             mHealth = mHealth + ((mCharacterManager.GetHungerHealthDrain() / 60) * Time.deltaTime);
         }
-        if (mHunger < mCharacterManager.GetHungerAdrenalineThreshhold())
+        else if (mHunger < mCharacterManager.GetHungerAdrenalineThreshhold())
         {
             mAdrenaline = mAdrenaline + ((mCharacterManager.GetHungerAdrenalineDrain() / 60) * Time.deltaTime);
+        }
+
+        mStamina = mStamina + ((mCharacterManager.GetBaseSprintStaminaDrain() / 2) * Time.deltaTime);
+        if (mStamina >= mActualMaxStamina) 
+        { 
+            mStamina = mActualMaxStamina; 
+        }
+        else if (mStamina < 0) 
+        { 
+            mStamina = 0; 
         }
     }
 

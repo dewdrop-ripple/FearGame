@@ -61,8 +61,8 @@ MonoBehaviour:
   mBaseAdrenaline: 0
   mSprintSpeedMultiplier: 3
   mCrouchSpeedMultiplier: 0.3
-  mBaseSprintStaminaDrain: 1
-  mBaseJumpStaminaDrain: 5
+  mBaseSprintStaminaDrain: 10
+  mBaseJumpStaminaDrain: 15
   mBaseJumpForce: 5
   mBaseGravity: 10
   mBaseViewSensitivity: 1000
