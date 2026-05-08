@@ -1,9 +1,6 @@
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
 using UnityEngine;
 using static SC_CharacterData;
 using static SC_FearData;
-using static UnityEditor.Progress;
 
 public class SC_PlayerData : MonoBehaviour
 {
