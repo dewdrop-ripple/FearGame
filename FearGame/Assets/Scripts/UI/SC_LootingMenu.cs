@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SC_Inventory : MonoBehaviour
+public class SC_LootingMenu : MonoBehaviour
 {
     // ----- VARIABLES ----- //
 
@@ -11,8 +11,8 @@ public class SC_Inventory : MonoBehaviour
     // Inventory Data
     [SerializeField] private SC_PlayerData mAttachedPlayer;
     [SerializeField] private SC_PlayerMovement mAttachedPlayerMovement;
-    [SerializeField] private List<SC_InventoryItem> mItemList;
-    [SerializeField] private GameObject mDropSpot;
+    [SerializeField] private List<SC_LootingItem> mItemList;
+    [SerializeField] private SC_Corpse mTargetBody;
 
     // UI Data
     [SerializeField] private Canvas mInventoryCanvas;
@@ -30,22 +30,23 @@ public class SC_Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (mGameManager.GetGameState() == SC_GameManager.GameState.INVENTORY)
+        if (mGameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
         {
             mInventoryCanvas.enabled = true;
 
             for (int i = 0; i < mItemList.Count; i++)
             {
-                if (mAttachedPlayer.GetNumItems() <= i)
+                if (mTargetBody.GetNumItems() <= i)
                 {
                     mItemList[i].RemoveItem();
                 }
-                else 
+                else
                 {
-                    mItemList[i].SetItem(mAttachedPlayer.GetItem(i));
+                    mItemList[i].SetItem(mTargetBody.GetItem(i));
                 }
             }
 
+            Debug.Log(mItemList[mSelectedIndex].GetText());
             mSelectedItemText.text = mItemList[mSelectedIndex].GetText();
         }
         else
@@ -54,8 +55,21 @@ public class SC_Inventory : MonoBehaviour
         }
     }
 
+    public void SetBody(SC_Corpse body)
+    {
+        Debug.Log("Body Set");
+        mTargetBody = body;
+    }
+
+    public void OpenMenu()
+    {
+        mAttachedPlayerMovement.SetPaused(true);
+        mGameManager.SetGameState(SC_GameManager.GameState.LOOTING);
+    }
+
 
     // ----- BUTTONS ----- //
+
     public void SetSelectedIndex(int index)
     {
         mSelectedIndex = index;
@@ -70,28 +84,24 @@ public class SC_Inventory : MonoBehaviour
         }
     }
 
-    public void UseItem()
+    public void CollectItem()
     {
-        bool success = mItemList[mSelectedIndex].GetItem().UseItem(mAttachedPlayer);
+        if (mSelectedIndex >= mTargetBody.GetNumItems())
+        {
+            Debug.Log("Empty Slot");
+            return;
+        }
+
+        bool success = mAttachedPlayer.AddItem(mItemList[mSelectedIndex].GetItem());
 
         if (success)
         {
-            mAttachedPlayer.RemoveItem(mItemList[mSelectedIndex].GetItem());
+            mTargetBody.RemoveItem(mSelectedIndex);
+            mItemList[mSelectedIndex].RemoveItem();
         }
     }
 
-    public void DropItem()
-    {
-        mItemList[mSelectedIndex].GetItem().gameObject.transform.position = mDropSpot.transform.position;
-
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Renderer>().enabled = true;
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Collider>().enabled = true;
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Rigidbody>().detectCollisions = true;
-
-        mAttachedPlayer.RemoveItemWithoutDestroying(mItemList[mSelectedIndex].GetItem());
-    }
-
-    public void CloseInventory()
+    public void CloseMenu()
     {
         mAttachedPlayerMovement.SetPaused(false);
         mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);

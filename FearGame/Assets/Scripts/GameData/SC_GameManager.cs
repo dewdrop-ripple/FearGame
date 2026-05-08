@@ -9,7 +9,8 @@ public class SC_GameManager : MonoBehaviour
         MENU,
         INVENTORY,
         PAUSED,
-        PLAYING
+        PLAYING,
+        LOOTING
     }
 
     private SC_CharacterDataManager.CharacterName mCurrentCharacter = SC_CharacterDataManager.CharacterName.LILLIAN;
