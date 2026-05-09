@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1706.6667
     height: 976
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Game
   m_RootView: {fileID: 4}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -34,7 +34,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -43,15 +43,15 @@ MonoBehaviour:
     y: 367.33334
     width: 392.66663
     height: 552.6666
-  m_MinSize: {x: 232, y: 276}
-  m_MaxSize: {x: 10002, y: 10026}
-  m_ActualView: {fileID: 21}
+  m_MinSize: {x: 52, y: 76}
+  m_MaxSize: {x: 4002, y: 4026}
+  m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 21}
   - {fileID: 18}
   - {fileID: 13}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 112}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 2326
+  controlID: 92
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -221,8 +221,8 @@ MonoBehaviour:
     y: 0
     width: 392.66663
     height: 367.33334
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 226}
+  m_MaxSize: {x: 4002, y: 4026}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -247,8 +247,8 @@ MonoBehaviour:
     y: 0
     width: 366
     height: 920
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 76}
+  m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -979,31 +979,12 @@ MonoBehaviour:
     m_DynamicPanelBehavior: 0
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 111.66666}
-      m_SelectedIDs:
-      - m_Data: -111904
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: []
       m_LastClickedID:
-        m_Data: -111904
+        m_Data: 0
       m_ExpandedIDs:
-      - m_Data: -111904
-      - m_Data: -111884
-      - m_Data: -99348
-      - m_Data: -24922
-      - m_Data: -19220
-      - m_Data: -19100
-      - m_Data: -18936
-      - m_Data: -11146
-      - m_Data: -11134
-      - m_Data: -11086
-      - m_Data: -10920
-      - m_Data: -1636
-      - m_Data: -1598
-      - m_Data: -1584
-      - m_Data: -1576
-      - m_Data: -1564
-      - m_Data: -1516
       - m_Data: -1322
-      - m_Data: -12
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1131,7 +1112,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Scripts/CharacterScripts
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1141,7 +1122,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Scripts/CharacterScripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\jorda\Source\Repos\FearGame\FearGame
   m_LockTracker:
@@ -1150,14 +1131,14 @@ MonoBehaviour:
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs:
-    - m_Data: 52812
+    - m_Data: 49380
     m_LastClickedID:
-      m_Data: 52812
+      m_Data: 49380
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 49240
-    - m_Data: 49242
-    - m_Data: 49244
+    - m_Data: 49040
+    - m_Data: 49042
+    - m_Data: 49044
     - m_Data: 1000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1192,9 +1173,9 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 49240
-    - m_Data: 49242
-    - m_Data: 49244
+    - m_Data: 49040
+    - m_Data: 49042
+    - m_Data: 49044
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1222,10 +1203,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs:
-    - m_Data: -111904
+    m_SelectedInstanceIDs: []
     m_LastClickedEntityId:
-      m_Data: -111904
+      m_Data: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs:
     - m_Data: 66634
@@ -1256,8 +1236,8 @@ MonoBehaviour:
     - m_Data: 48492
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PR_Player
-      m_OriginalName: PR_Player
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
@@ -1265,10 +1245,10 @@ MonoBehaviour:
         width: 0
         height: 0
       m_UserData:
-        m_Data: 47510
+        m_Data: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
       m_ClientGUIView: {fileID: 2}
@@ -2010,9 +1990,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: -19.853338, y: -5.8121495, z: 4.4186745}
+    m_Target: {x: -6.3978004, y: -3.5136054, z: 0.59278893}
     speed: 2
-    m_Value: {x: -19.853338, y: -5.8121495, z: 4.4186745}
+    m_Value: {x: -6.3978004, y: -3.5136054, z: 0.59278893}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -2059,9 +2039,9 @@ MonoBehaviour:
     m_gridOpacity: 0.5
     m_NearestPlaneToHandleMode: 0
   m_Rotation:
-    m_Target: {x: 0.16120566, y: -0.7975706, z: 0.24414995, w: 0.5281513}
+    m_Target: {x: 0.0062797205, y: -0.9536933, z: 0.30110204, w: 0.020872157}
     speed: 2
-    m_Value: {x: 0.16115257, y: -0.79730785, z: 0.24406953, w: 0.5279773}
+    m_Value: {x: 0.0062776227, y: -0.9533747, z: 0.30100146, w: 0.020865185}
   m_Size:
     m_Target: 12.124355
     speed: 2
