@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using static SC_CharacterData;
 using static SC_FearData;
@@ -9,6 +10,7 @@ public class SC_PlayerData : MonoBehaviour
     // Game manager for character data
     private SC_GameManager mGameManager;
     private SC_CharacterDataManager mCharacterManager;
+    [SerializeField] SC_PlayerMovement mPlayerMovement;
 
     // Base character data
     private SC_CharacterDataManager.CharacterName mCurrentCharacter;
@@ -40,6 +42,8 @@ public class SC_PlayerData : MonoBehaviour
 
     // Inventory
     [SerializeField] private SC_CharacterInventory mInventory;
+    [SerializeField] private GameObject mCorpsePrefab;
+    [SerializeField] private GameObject mDropSpot;
 
 
     // ----- FUNCTIONS ----- //
@@ -55,6 +59,11 @@ public class SC_PlayerData : MonoBehaviour
     private void Update()
     {
         UpdateStats();
+
+        if (mHealth < 0 && mGameManager.GetGameState() != SC_GameManager.GameState.DEAD)
+        {
+            Die();
+        }
     }
 
     // Reset player stats to the base starting stats
@@ -344,10 +353,22 @@ public class SC_PlayerData : MonoBehaviour
         return mInventory.Contains(itemType);
     }
 
-    /*
-    public void Sort()
+
+    // ----- Death ----- //
+
+    public void Die()
     {
-        mInventory.Sort();
+        mPlayerMovement.SetPaused(true);
+        mGameManager.SetGameState(SC_GameManager.GameState.DEAD);
+
+        Vector3 spawnPos = transform.position;
+        Quaternion spawnRot = transform.rotation;
+        GameObject corpse = Instantiate(mCorpsePrefab, spawnPos, spawnRot);
+
+        for (int i = 0; i < GetNumItems(); i++)
+        {
+            corpse.GetComponent<SC_Corpse>().AddItem(GetItem(i));
+            RemoveItemWithoutDestroying(GetItem(i));
+        }
     }
-    */
 }

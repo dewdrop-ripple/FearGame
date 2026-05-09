@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e9e27fafb62564d9ddb5edcf8489b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_GameManager
+  mPlayerPrefab: {fileID: 2268327369754517120, guid: 66a7484ef1d356640b5061c477006282, type: 3}
 --- !u!114 &6789298290676434174
 MonoBehaviour:
   m_ObjectHideFlags: 0

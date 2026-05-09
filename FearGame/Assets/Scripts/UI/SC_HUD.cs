@@ -15,19 +15,16 @@ public class SC_HUD : MonoBehaviour
 
     // ----- FUNCTIONS ----- //
 
-    private void Start()
-    {
-        mHungerSlider.maxValue = 100;
-        mAdrenalineSlider.maxValue = 100;
-        mHealthSlider.maxValue = mPlayerData.GetMaxHealth();
-        mStaminaSlider.maxValue = mPlayerData.GetMaxStamina();
-    }
-
     private void Update()
     {
         mHungerSlider.value = mHungerSlider.maxValue - mPlayerData.GetHunger();
         mAdrenalineSlider.value = mAdrenalineSlider.maxValue - mPlayerData.GetAdrenaline();
         mHealthSlider.value = mPlayerData.GetHealth();
         mStaminaSlider.value = mPlayerData.GetStamina();
+
+        mHungerSlider.maxValue = 100;
+        mAdrenalineSlider.maxValue = 100;
+        mHealthSlider.maxValue = mPlayerData.GetMaxHealth();
+        mStaminaSlider.maxValue = mPlayerData.GetMaxStamina();
     }
 }

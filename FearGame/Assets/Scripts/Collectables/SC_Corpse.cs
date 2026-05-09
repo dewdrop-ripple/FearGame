@@ -39,4 +39,9 @@ public class SC_Corpse : MonoBehaviour
             mHeldItems[i].gameObject.GetComponent<Rigidbody>().detectCollisions = false;
         }
     }
+
+    public void AddItem(SC_Collectable item)
+    {
+        mHeldItems.Add(item);
+    }
 }

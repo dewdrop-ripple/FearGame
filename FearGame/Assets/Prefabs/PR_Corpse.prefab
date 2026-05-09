@@ -128,10 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63866520af1100244b797c4726488d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_Corpse
-  mHeldItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  mHeldItems: []
 --- !u!54 &5827625764859659303
 Rigidbody:
   m_ObjectHideFlags: 0

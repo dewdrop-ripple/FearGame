@@ -10,12 +10,15 @@ public class SC_GameManager : MonoBehaviour
         INVENTORY,
         PAUSED,
         PLAYING,
-        LOOTING
+        LOOTING,
+        DEAD
     }
 
     private SC_CharacterDataManager.CharacterName mCurrentCharacter = SC_CharacterDataManager.CharacterName.LILLIAN;
 
     private GameState mCurrentGameState = GameState.MENU;
+
+    [SerializeField] private GameObject mPlayerPrefab;
 
 
     // ----- FUNCTIONS ----- //
@@ -29,6 +32,17 @@ public class SC_GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (!FindAnyObjectByType<SC_PlayerData>() && FindAnyObjectByType<SC_Spawn>())
+        {
+            mCurrentGameState = GameState.PLAYING;
+            Vector3 spawnPos = FindAnyObjectByType<SC_Spawn>().gameObject.transform.position;
+            Quaternion spawnRot = FindAnyObjectByType<SC_Spawn>().gameObject.transform.rotation;
+            GameObject corpse = Instantiate(mPlayerPrefab, spawnPos, spawnRot);
+        }
     }
 
 
