@@ -75,7 +75,7 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void UpdateCharacterData()
     {
-        mWalkSpeed = mPlayerData.GetSpeed();
+        mWalkSpeed = (mPlayerData.GetSpeed() / 2.5f) + 1.0f;
 
         mSprintSpeed = mWalkSpeed * mCharacterManager.GetSprintSpeedMultiplier();
         mCrouchSpeed = mWalkSpeed * mCharacterManager.GetCrouchSpeedMultiplier();
@@ -240,7 +240,6 @@ public class SC_PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, mCurrentZRotation);
         }
 
-        // Handle jumping
         if (Input.GetKeyDown(KeyCode.Space) && mIsGrounded)
         {
             if (mPlayerData.GetStamina() >= mCharacterManager.GetBaseJumpStaminaDrain())

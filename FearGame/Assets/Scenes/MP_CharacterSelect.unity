@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b0d786c6242cd54283f63e3e788f147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_CharacterStartButton
-  mNextSceneName: MP_MovementDemo
+  mNextSceneName: MP_Gymnasium
   mCharacterPanel: {fileID: 1060067324}
 --- !u!1 &84860428
 GameObject:
