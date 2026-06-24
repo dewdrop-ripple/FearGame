@@ -20,6 +20,8 @@ public class SC_GameManager : MonoBehaviour
 
     [SerializeField] private GameObject mPlayerPrefab;
 
+    [SerializeField] private bool mLockPlayerStats = false;
+
 
     // ----- FUNCTIONS ----- //
 
@@ -66,5 +68,15 @@ public class SC_GameManager : MonoBehaviour
     public void SetGameState(GameState newState)
     {
         mCurrentGameState = newState;
+    }
+
+    public bool AreStatsLocked()
+    {
+        return mLockPlayerStats;
+    }
+
+    public void SetPlayerStatsLocked(bool isLocked)
+    {
+        mLockPlayerStats = isLocked;
     }
 }

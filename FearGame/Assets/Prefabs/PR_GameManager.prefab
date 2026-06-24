@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_GameManager
   mPlayerPrefab: {fileID: 2268327369754517120, guid: 66a7484ef1d356640b5061c477006282, type: 3}
+  mLockPlayerStats: 0
 --- !u!114 &6789298290676434174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,10 +61,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SC_CharacterDataManager
   mCharacterList: []
   mBaseAdrenaline: 0
-  mSprintSpeedMultiplier: 3
+  mSprintSpeedMultiplier: 2
   mCrouchSpeedMultiplier: 0.3
-  mBaseSprintStaminaDrain: 10
-  mBaseJumpStaminaDrain: 15
+  mBaseSprintStaminaDrain: 15
+  mBaseJumpStaminaDrain: 5
   mBaseJumpForce: 5
   mBaseGravity: 10
   mBaseViewSensitivity: 1000

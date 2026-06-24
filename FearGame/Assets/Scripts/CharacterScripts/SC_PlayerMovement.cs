@@ -46,11 +46,16 @@ public class SC_PlayerMovement : MonoBehaviour
     // Used for inventory and pausing
     private bool mIsPaused = false;
 
+    // For stamina fixes
+    private Vector3 mLastPosition;
+
 
     // ----- FUNCTIONS ----- //
 
     private void Start()
     {
+        mLastPosition = transform.position;
+
         mCharacterManager = FindAnyObjectByType<SC_CharacterDataManager>();
         mGameManager = FindAnyObjectByType<SC_GameManager>();
         mPlayerData = GetComponent<SC_PlayerData>();
@@ -67,7 +72,7 @@ public class SC_PlayerMovement : MonoBehaviour
         mCharacterController = transform.GetComponent<CharacterController>();
         mOriginalHeight = mCharacterController.height;
         mTargetHeight = mOriginalHeight;
-        mBaseCameraHeight = mMainCamera.transform.position.y;
+        mBaseCameraHeight = mMainCamera.transform.localPosition.y;
         mTargetCameraHeight = mBaseCameraHeight;
 
         LockCursor(); // Lock cursor after game start
@@ -108,12 +113,6 @@ public class SC_PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 mTargeter.CollectTargeted();
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                float staminaDrain = mCharacterManager.GetBaseSprintStaminaDrain() * Time.deltaTime;
-                mPlayerData.SetStamina(mPlayerData.GetStamina() - staminaDrain);
             }
         }
 
@@ -164,6 +163,8 @@ public class SC_PlayerMovement : MonoBehaviour
 
     private void Move()
     {
+        mLastPosition = transform.position;
+
         mActualHorizontalSpeed = ((new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(mPreviousPosition.x, 0f, mPreviousPosition.z)).magnitude) / Time.deltaTime;
         mActualSpeed = ((transform.position - mPreviousPosition).magnitude) / Time.deltaTime;
         mPreviousPosition = transform.position;
@@ -174,40 +175,32 @@ public class SC_PlayerMovement : MonoBehaviour
             mMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             mMoveDirection = transform.TransformDirection(mMoveDirection);
 
-            if (mPlayerData.GetStamina() > 0)
+            if (mPlayerData.GetStamina() > 5)
             {
                 mCanSprint = true;
+
+                if (Input.GetKey(KeyCode.LeftShift) && !mIsCrouched)
+                {
+                    mIsRunning = true;
+                    mMoveDirection *= mSprintSpeed;
+                }
+                else
+                {
+                    mIsRunning = false;
+
+                    if (mIsCrouched)
+                    {
+                        mMoveDirection *= mCrouchSpeed;
+                    }
+                    else
+                    {
+                        mMoveDirection *= mWalkSpeed;
+                    }
+                }
             }
-            else
+            else if (mPlayerData.GetStamina() > 2)
             {
                 mCanSprint = false;
-            }
-
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                mCharacterController.height = mOriginalHeight - 1;
-                mMainCamera.transform.position = new Vector3(mMainCamera.transform.position.x,
-                                            mBaseCameraHeight - 1,
-                                            mMainCamera.transform.position.z);
-                mCharacterController.Move(new Vector3(0, -0.5f, 0));
-                mIsCrouched = true;
-            }
-            else if (mCanStandUp)
-            {
-                mCharacterController.height = mOriginalHeight; // Set the target standing height
-                mMainCamera.transform.position = new Vector3(mMainCamera.transform.position.x,
-                                            mBaseCameraHeight,
-                                            mMainCamera.transform.position.z);
-                mIsCrouched = false;
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift) && mCanSprint && !mIsCrouched)
-            {
-                mIsRunning = true;
-                mMoveDirection *= mSprintSpeed;
-
-              float staminaDrain = mCharacterManager.GetBaseSprintStaminaDrain() * Time.deltaTime;
-                mPlayerData.SetStamina(mPlayerData.GetStamina() - staminaDrain);  
             }
             else
             {
@@ -221,6 +214,27 @@ public class SC_PlayerMovement : MonoBehaviour
                 {
                     mMoveDirection *= mWalkSpeed;
                 }
+            }
+
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                mCharacterController.height = mOriginalHeight - 1;
+                mMainCamera.transform.localPosition = new Vector3(mMainCamera.transform.localPosition.x,
+                                            mBaseCameraHeight - 1,
+                                            mMainCamera.transform.localPosition.z);
+                mCharacterController.Move(new Vector3(0, -0.5f, 0));
+
+                mIsCrouched = true;
+            }
+            else if (mCanStandUp && mIsCrouched)
+            {
+                mCharacterController.Move(new Vector3(0, 0.5f, 0));
+                mMainCamera.transform.localPosition = new Vector3(mMainCamera.transform.localPosition.x,
+                                            mBaseCameraHeight,
+                                            mMainCamera.transform.localPosition.z);
+                mCharacterController.height = mOriginalHeight; // Set the target standing height
+
+                mIsCrouched = false;
             }
 
             if (Input.GetKey(KeyCode.D))
@@ -253,6 +267,15 @@ public class SC_PlayerMovement : MonoBehaviour
         // Apply gravity
         mMoveDirection.y -= mGravity * Time.deltaTime;
         mCharacterController.Move(mMoveDirection * Time.deltaTime);
+
+        if (mIsRunning)
+        {
+            if (Mathf.Abs(mLastPosition.x - transform.position.x) < 0.25f && Mathf.Abs(mLastPosition.z - transform.position.z) < 0.25f)
+            {
+                float staminaDrain = mCharacterManager.GetBaseSprintStaminaDrain() * Time.deltaTime;
+                mPlayerData.SetStamina(mPlayerData.GetStamina() - staminaDrain);
+            }
+        }
     }
 
     private void CheckObstaclesAbove()

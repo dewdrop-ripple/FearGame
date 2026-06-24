@@ -13,20 +13,27 @@ public class SC_FearZoneCollisions : MonoBehaviour
 
     private SC_PlayerData mPlayerData;
 
+    private SC_GameManager mGameManager;
+
 
     // ----- FUNCTIONS ----- //
 
     private void Start()
     {
         mPlayerData = GetComponent<SC_PlayerData>();
+
+        mGameManager = FindAnyObjectByType<SC_GameManager>();
     }
 
     private void Update()
     {
-        float currentAdrenaline = mPlayerData.GetAdrenaline();
-        float adrenalineChange = (1 / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
+        if (!mGameManager.AreStatsLocked())
+        {
+            float currentAdrenaline = mPlayerData.GetAdrenaline();
+            float adrenalineChange = (1 / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
 
-        mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
+            mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -45,7 +52,7 @@ public class SC_FearZoneCollisions : MonoBehaviour
             {
                 adrenalineEffect = M_NEAR_PLAYER_ZONE_VALUE;
             }
-            else 
+            else
             {
                 adrenalineEffect = mPlayerData.GetFearValue(zoneType);
             }

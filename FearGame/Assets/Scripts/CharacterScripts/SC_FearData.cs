@@ -18,6 +18,6 @@ public class SC_FearData : MonoBehaviour
         PYROPHOBIA,
         NUMBER_OF_FEARS,
         SAFE,
-        NEAR_PLAYER
+        NEAR_PLAYER,
     }
 }

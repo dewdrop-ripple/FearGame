@@ -59,6 +59,7 @@ public class SC_PlayerData : MonoBehaviour
     private void Update()
     {
         UpdateStats();
+        
 
         if (mHealth < 0 && mGameManager.GetGameState() != SC_GameManager.GameState.DEAD)
         {
@@ -104,24 +105,27 @@ public class SC_PlayerData : MonoBehaviour
     // Update stats based on adrenaline and number of deaths
     private void UpdateStats()
     {
-        float adrenalineFactor = ((100.0f - mAdrenaline) / 200.0f) + 0.5f;
-
-        mActualSpeed = (mSpeed - (((mSpeed - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
-        mActualStealth = (mStealth - (((mStealth - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
-        mActualResilience = (mResilience - (((mResilience - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
-
-        mHunger = mHunger + (((mCharacterManager.GetBaseHungerDrain() / 60) * Time.deltaTime) / adrenalineFactor);
-        if (mHunger >= 100)
+        if (!mGameManager.AreStatsLocked())
         {
-            mHunger = 100;
-            mHealth = mHealth + ((mCharacterManager.GetHungerHealthDrain() / 60) * Time.deltaTime);
-        }
-        else if (mHunger < mCharacterManager.GetHungerAdrenalineThreshhold())
-        {
-            mAdrenaline = mAdrenaline + ((mCharacterManager.GetHungerAdrenalineDrain() / 60) * Time.deltaTime);
+            float adrenalineFactor = ((100.0f - mAdrenaline) / 200.0f) + 0.5f;
+
+            mActualSpeed = (mSpeed - (((mSpeed - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
+            mActualStealth = (mStealth - (((mStealth - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
+            mActualResilience = (mResilience - (((mResilience - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
+
+            mHunger = mHunger + (((mCharacterManager.GetBaseHungerDrain() / 60) * Time.deltaTime) / adrenalineFactor);
+            if (mHunger >= 100)
+            {
+                mHunger = 100;
+                mHealth = mHealth + ((mCharacterManager.GetHungerHealthDrain() / 60) * Time.deltaTime);
+            }
+            else if (mHunger < mCharacterManager.GetHungerAdrenalineThreshhold())
+            {
+                mAdrenaline = mAdrenaline + ((mCharacterManager.GetHungerAdrenalineDrain() / 60) * Time.deltaTime);
+            }
         }
 
-        mStamina = mStamina + ((mCharacterManager.GetBaseSprintStaminaDrain() / 2) * Time.deltaTime);
+        mStamina = mStamina + ((mCharacterManager.GetBaseSprintStaminaDrain() / 1.5f) * Time.deltaTime);
         if (mStamina >= mActualMaxStamina) 
         { 
             mStamina = mActualMaxStamina; 

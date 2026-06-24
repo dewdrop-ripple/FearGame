@@ -13,6 +13,7 @@ public class SC_Collectable : MonoBehaviour
 
     [SerializeField] private CollectableType mType;
     [SerializeField] private float mEffectStrength;
+    [SerializeField] private bool mIsVisible;
 
 
     // ----- FUNCTIONS ----- //
@@ -56,6 +57,11 @@ public class SC_Collectable : MonoBehaviour
     public float GetCollectableStrength()
     {
         return mEffectStrength;
+    }
+
+    public bool IsVisible()
+    {
+        return gameObject.GetComponent<Renderer>().enabled;
     }
 
     /*
