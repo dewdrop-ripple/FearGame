@@ -6,13 +6,16 @@ public class SC_CheckCollect : MonoBehaviour
 
     [SerializeField] SC_PlayerData mPlayer;
     [SerializeField] SC_LootingMenu mLootingMenu;
+    [SerializeField] SC_TextBox mTextBox;
 
     [SerializeField] private SC_Collectable mTargetedCollectable = null;
     [SerializeField] private SC_Corpse mTargetedBody = null;
+    [SerializeField] private SC_NPC mTargetedNPC = null;
     [SerializeField] private SC_Collectable mNullCollectable; 
 
     private const string M_COLLECTABLE_TAG = "Collectable";
     private const string M_BODY_TAG = "Corpse";
+    private const string M_NPC_TAG = "NPC";
 
 
     // ----- FUNCTIONS ----- //
@@ -35,6 +38,12 @@ public class SC_CheckCollect : MonoBehaviour
             mLootingMenu.OpenMenu();
             Debug.Log("Loot Body");
         }
+        else if (mTargetedNPC != null)
+        {
+            mTextBox.SetNPC(mTargetedNPC);
+            mTextBox.OpenMenu();
+            Debug.Log("Talk to NPC");
+        }
     }
 
 
@@ -52,6 +61,11 @@ public class SC_CheckCollect : MonoBehaviour
             mTargetedBody = collision.gameObject.GetComponent<SC_Corpse>();
             Debug.Log("Body Targeted");
         }
+        else if (collision.gameObject.tag == M_NPC_TAG)
+        {
+            mTargetedNPC = collision.gameObject.GetComponent<SC_NPC>();
+            Debug.Log("NPC Targeted");
+        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -66,6 +80,11 @@ public class SC_CheckCollect : MonoBehaviour
             mTargetedBody = collision.gameObject.GetComponent<SC_Corpse>();
             Debug.Log("Body Targeted");
         }
+        else if (collision.gameObject.tag == M_NPC_TAG)
+        {
+            mTargetedNPC = collision.gameObject.GetComponent<SC_NPC>();
+            Debug.Log("NPC Targeted");
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -79,6 +98,11 @@ public class SC_CheckCollect : MonoBehaviour
         {
             mTargetedBody = null;
             Debug.Log("Body Untargeted");
+        }
+        else if (collision.gameObject.tag == M_NPC_TAG)
+        {
+            mTargetedNPC = null;
+            Debug.Log("NPC Untargeted");
         }
     }
 }

@@ -11,7 +11,8 @@ public class SC_GameManager : MonoBehaviour
         PAUSED,
         PLAYING,
         LOOTING,
-        DEAD
+        DEAD,
+        TALKING_TO_NPC
     }
 
     private SC_CharacterDataManager.CharacterName mCurrentCharacter = SC_CharacterDataManager.CharacterName.LILLIAN;
