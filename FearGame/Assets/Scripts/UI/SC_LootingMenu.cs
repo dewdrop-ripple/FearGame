@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SC_LootingMenu : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class SC_LootingMenu : MonoBehaviour
 
     // UI Data
     [SerializeField] private Canvas mInventoryCanvas;
+
+    [SerializeField] private Scrollbar mScrollbar;
 
     [SerializeField] private TextMeshProUGUI mSelectedItemText;
     private int mSelectedIndex = 0;
@@ -65,6 +68,8 @@ public class SC_LootingMenu : MonoBehaviour
     {
         mAttachedPlayerMovement.SetPaused(true);
         mGameManager.SetGameState(SC_GameManager.GameState.LOOTING);
+
+        mScrollbar.value = 1;
     }
 
 
@@ -105,5 +110,7 @@ public class SC_LootingMenu : MonoBehaviour
     {
         mAttachedPlayerMovement.SetPaused(false);
         mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
+
+        mScrollbar.value = 1;
     }
 }

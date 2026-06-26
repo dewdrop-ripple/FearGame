@@ -45,6 +45,9 @@ public class SC_PlayerData : MonoBehaviour
     [SerializeField] private GameObject mCorpsePrefab;
     [SerializeField] private GameObject mDropSpot;
 
+    // Damage
+    private const string M_DAMAGE_TAG = "Damage";
+
 
     // ----- FUNCTIONS ----- //
 
@@ -60,8 +63,12 @@ public class SC_PlayerData : MonoBehaviour
     {
         UpdateStats();
         
+        if (transform.position.y < -100f)
+        {
+            mHealth = 0;
+        }
 
-        if (mHealth < 0 && mGameManager.GetGameState() != SC_GameManager.GameState.DEAD)
+        if (mHealth <= 0 && mGameManager.GetGameState() != SC_GameManager.GameState.DEAD)
         {
             Die();
         }
@@ -358,21 +365,64 @@ public class SC_PlayerData : MonoBehaviour
     }
 
 
-    // ----- Death ----- //
+    // ----- Death and Damage ----- //
 
     public void Die()
     {
         mPlayerMovement.SetPaused(true);
         mGameManager.SetGameState(SC_GameManager.GameState.DEAD);
 
-        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.x);
+        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
         Quaternion spawnRot = transform.rotation;
         GameObject corpse = Instantiate(mCorpsePrefab, spawnPos, spawnRot);
 
-        for (int i = 0; i < GetNumItems(); i++)
+        for (int i = GetNumItems() - 1; i >= 0; i--)
         {
             corpse.GetComponent<SC_Corpse>().AddItem(GetItem(i));
             RemoveItemWithoutDestroying(GetItem(i));
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        mHealth -= (damage / 2) + ((damage / 2) / mActualResilience);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == M_DAMAGE_TAG)
+        {
+            SC_Damage damageObject = other.gameObject.GetComponent<SC_Damage>();
+            
+            if (damageObject.CanDealDamage())
+            {
+                damageObject.StartCooldown();
+                TakeDamage(damageObject.GetDamage());
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == M_DAMAGE_TAG)
+        {
+            SC_Damage damageObject = other.gameObject.GetComponent<SC_Damage>();
+
+            if (damageObject.CanDealDamage())
+            {
+                damageObject.StartCooldown();
+                TakeDamage(damageObject.GetDamage());
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == M_DAMAGE_TAG)
+        {
+            SC_Damage damageObject = other.gameObject.GetComponent<SC_Damage>();
+
+            damageObject.CancelCooldown();
         }
     }
 }

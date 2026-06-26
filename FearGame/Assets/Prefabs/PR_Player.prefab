@@ -597,6 +597,7 @@ MonoBehaviour:
   - {fileID: 2379050434845885606}
   mDropSpot: {fileID: 5079752034501200066}
   mInventoryCanvas: {fileID: 2043974462080579313}
+  mScrollbar: {fileID: 7450575410677332030}
   mSelectedItemText: {fileID: 3691602785285199183}
 --- !u!1 &875545525177284893
 GameObject:
@@ -1188,7 +1189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 7724756761091439961}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -2781,7 +2782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 478.47076}
+  m_AnchoredPosition: {x: 0, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 844.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4019425907197855025
@@ -2963,7 +2964,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 478.4706}
+  m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 0, y: 844.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4135952028481516772
@@ -3223,8 +3224,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 139505713655200756}
   m_HandleRect: {fileID: 4367815960284876450}
   m_Direction: 2
-  m_Value: -0.0000015307584
-  m_Size: 0.43356225
+  m_Value: 0.9999999
+  m_Size: 0.4335622
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3634,8 +3635,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 967080866433731995}
   m_HandleRect: {fileID: 2505548960530648230}
   m_Direction: 2
-  m_Value: -0.000001275632
-  m_Size: 0.43356225
+  m_Value: 1.0000002
+  m_Size: 0.43356222
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4357,6 +4358,7 @@ MonoBehaviour:
   - {fileID: 5700351245419216376}
   mTargetBody: {fileID: 0}
   mInventoryCanvas: {fileID: 1186963051754112558}
+  mScrollbar: {fileID: 3617546153022159989}
   mSelectedItemText: {fileID: 28229241423138358}
 --- !u!1 &4909657230358596939
 GameObject:
@@ -5734,7 +5736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 1420272082179089878}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -6374,7 +6376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.999756, y: -50.360157}
+  m_AnchoredPosition: {x: 4.999756, y: -50.360153}
   m_SizeDelta: {x: -100, y: -8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7260596549026056261
@@ -6554,7 +6556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -33.200012, y: -18.3}
+  m_AnchoredPosition: {x: -33.200012, y: -18.300003}
   m_SizeDelta: {x: 0, y: -39.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1775791938112851222

@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SC_Inventory : MonoBehaviour
 {
     // ----- VARIABLES ----- //
 
     private SC_GameManager mGameManager;
+
+    private bool mResetInventory = true;
 
     // Inventory Data
     [SerializeField] private SC_PlayerData mAttachedPlayer;
@@ -16,6 +19,8 @@ public class SC_Inventory : MonoBehaviour
 
     // UI Data
     [SerializeField] private Canvas mInventoryCanvas;
+
+    [SerializeField] private Scrollbar mScrollbar;
 
     [SerializeField] private TextMeshProUGUI mSelectedItemText;
     private int mSelectedIndex = 0;
@@ -34,6 +39,12 @@ public class SC_Inventory : MonoBehaviour
         {
             mInventoryCanvas.enabled = true;
 
+            if (mResetInventory)
+            {
+                mResetInventory = false;
+                mScrollbar.value = 1;
+            }
+
             for (int i = 0; i < mItemList.Count; i++)
             {
                 if (mAttachedPlayer.GetNumItems() <= i)
@@ -51,6 +62,7 @@ public class SC_Inventory : MonoBehaviour
         else
         {
             mInventoryCanvas.enabled = false;
+            mResetInventory = true;
         }
     }
 
@@ -95,5 +107,7 @@ public class SC_Inventory : MonoBehaviour
     {
         mAttachedPlayerMovement.SetPaused(false);
         mGameManager.SetGameState(SC_GameManager.GameState.PLAYING);
+
+        mScrollbar.value = 1;
     }
 }
