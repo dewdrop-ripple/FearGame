@@ -372,7 +372,7 @@ public class SC_PlayerData : MonoBehaviour
         mPlayerMovement.SetPaused(true);
         mGameManager.SetGameState(SC_GameManager.GameState.DEAD);
 
-        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.35f, transform.position.z);
         Quaternion spawnRot = transform.rotation;
         GameObject corpse = Instantiate(mCorpsePrefab, spawnPos, spawnRot);
 
