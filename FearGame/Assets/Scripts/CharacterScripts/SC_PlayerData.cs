@@ -116,7 +116,7 @@ public class SC_PlayerData : MonoBehaviour
         {
             float adrenalineFactor = ((100.0f - mAdrenaline) / 200.0f) + 0.5f;
 
-            mActualSpeed = (mSpeed - (((mSpeed - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
+            mActualSpeed = (mSpeed - (((mSpeed - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) + ((10 - mSpeed) / 100 * mAdrenaline);
             mActualStealth = (mStealth - (((mStealth - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
             mActualResilience = (mResilience - (((mResilience - 1) / mMaxNumberOfDeaths) * mNumberOfDeaths)) * adrenalineFactor;
 

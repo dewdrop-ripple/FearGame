@@ -25,6 +25,9 @@ public class SC_Inventory : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mSelectedItemText;
     private int mSelectedIndex = 0;
 
+    // For looting
+    [SerializeField] private SC_LootingMenu mLootingMenu;
+
 
     // ----- FUNCTIONS ----- //
 
@@ -35,7 +38,7 @@ public class SC_Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (mGameManager.GetGameState() == SC_GameManager.GameState.INVENTORY)
+        if (mGameManager.GetGameState() == SC_GameManager.GameState.INVENTORY || mGameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
         {
             mInventoryCanvas.enabled = true;
 
@@ -96,9 +99,12 @@ public class SC_Inventory : MonoBehaviour
     {
         mItemList[mSelectedIndex].GetItem().gameObject.transform.position = mDropSpot.transform.position;
 
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Renderer>().enabled = true;
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Collider>().enabled = true;
-        mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Rigidbody>().detectCollisions = true;
+        if (mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Renderer>() != null)
+        {
+            mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Renderer>().enabled = true;
+            mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Collider>().enabled = true;
+            mItemList[mSelectedIndex].GetItem().gameObject.GetComponent<Rigidbody>().detectCollisions = true;
+        }
 
         mAttachedPlayer.RemoveItemWithoutDestroying(mItemList[mSelectedIndex].GetItem());
     }

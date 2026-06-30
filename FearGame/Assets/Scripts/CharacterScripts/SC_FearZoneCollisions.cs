@@ -15,6 +15,8 @@ public class SC_FearZoneCollisions : MonoBehaviour
 
     private SC_GameManager mGameManager;
 
+    private const float M_ADRENALINE_DROP_MULTIPLIER = 2.0f;
+
 
     // ----- FUNCTIONS ----- //
 
@@ -30,7 +32,7 @@ public class SC_FearZoneCollisions : MonoBehaviour
         if (!mGameManager.AreStatsLocked())
         {
             float currentAdrenaline = mPlayerData.GetAdrenaline();
-            float adrenalineChange = (1 / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
+            float adrenalineChange = (1 / M_ADRENALINE_DROP_TIME) * Time.deltaTime * M_ADRENALINE_DROP_MULTIPLIER;
 
             mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
         }
@@ -58,7 +60,7 @@ public class SC_FearZoneCollisions : MonoBehaviour
             }
 
             float currentAdrenaline = mPlayerData.GetAdrenaline();
-            float adrenalineChange = (adrenalineEffect / M_ADRENALINE_DROP_TIME) * Time.deltaTime;
+            float adrenalineChange = (adrenalineEffect / M_ADRENALINE_DROP_TIME) * Time.deltaTime * M_ADRENALINE_DROP_MULTIPLIER;
 
             mPlayerData.SetAdrenaline(currentAdrenaline + adrenalineChange);
         }
