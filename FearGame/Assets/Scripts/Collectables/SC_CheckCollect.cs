@@ -30,6 +30,7 @@ public class SC_CheckCollect : MonoBehaviour
         if (mTargetedCollectable != mNullCollectable)
         {
             mTargetedCollectable.Collect(mPlayer);
+            mTargetedCollectable = mNullCollectable;
             Debug.Log("Collect Item");
         }
         else if (mTargetedBody != null)

@@ -65,12 +65,12 @@ public class SC_PlayerData : MonoBehaviour
         
         if (transform.position.y < -100f)
         {
-            mHealth = 0;
+            Die(false);
         }
 
         if (mHealth <= 0 && mGameManager.GetGameState() != SC_GameManager.GameState.DEAD)
         {
-            Die();
+            Die(true);
         }
     }
 
@@ -367,19 +367,22 @@ public class SC_PlayerData : MonoBehaviour
 
     // ----- Death and Damage ----- //
 
-    public void Die()
+    public void Die(bool leaveCorpse)
     {
         mPlayerMovement.SetPaused(true);
         mGameManager.SetGameState(SC_GameManager.GameState.DEAD);
 
-        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.35f, transform.position.z);
-        Quaternion spawnRot = transform.rotation;
-        GameObject corpse = Instantiate(mCorpsePrefab, spawnPos, spawnRot);
-
-        for (int i = GetNumItems() - 1; i >= 0; i--)
+        if (leaveCorpse)
         {
-            corpse.GetComponent<SC_Corpse>().AddItem(GetItem(i));
-            RemoveItemWithoutDestroying(GetItem(i));
+            Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y - 0.35f, transform.position.z);
+            Quaternion spawnRot = transform.rotation;
+            GameObject corpse = Instantiate(mCorpsePrefab, spawnPos, spawnRot);
+
+            for (int i = GetNumItems() - 1; i >= 0; i--)
+            {
+                corpse.GetComponent<SC_Corpse>().AddItem(GetItem(i));
+                RemoveItemWithoutDestroying(GetItem(i));
+            }
         }
     }
 
