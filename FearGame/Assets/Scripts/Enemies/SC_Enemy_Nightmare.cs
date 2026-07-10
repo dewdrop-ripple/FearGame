@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,7 +18,15 @@ public class SC_Enemy_Nightmare : MonoBehaviour
 
     [SerializeField] private GameObject mParent;
 
+    private GameObject[] mRespawnPoints;
+
+
     // ----- FUNCTIONS ----- //
+
+    private void Start()
+    {
+        mRespawnPoints = GameObject.FindGameObjectsWithTag("NightmareRespawn");
+    }
 
     // Update target
     // Move towards target player
@@ -45,12 +55,9 @@ public class SC_Enemy_Nightmare : MonoBehaviour
             // When player is caught, teleport to a random location
             if (Vector3.Distance(transform.position, mTargetPlayer.transform.position) <= mAcceptanceDistance)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    Vector3 teleportPos = GetRandomNavMeshPoint();
+                Vector3 teleportPos = GetRandomRespawnPoint();
 
-                    transform.position = teleportPos;
-                }
+                transform.position = teleportPos;
             }
         }
         else
@@ -86,5 +93,17 @@ public class SC_Enemy_Nightmare : MonoBehaviour
         }
 
         return transform.position;
+    }
+
+    private Vector3 GetRandomRespawnPoint()
+    {
+        if (mRespawnPoints.Length == 0)
+        {
+            return new Vector3(0, 0, 0);
+        }
+
+        int randomPointIndex = (int) Mathf.Floor(Random.Range(0.0f, mRespawnPoints.Length - 0.01f));
+
+        return mRespawnPoints[randomPointIndex].transform.position;
     }
 }

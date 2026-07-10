@@ -668,7 +668,7 @@ Canvas:
   m_GameObject: {fileID: 725446155382109646}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.57
   m_PixelPerfect: 0
@@ -681,7 +681,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &1678375887601870511
 MonoBehaviour:
@@ -1051,7 +1051,7 @@ Canvas:
   m_GameObject: {fileID: 1313176016102406868}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.39
   m_PixelPerfect: 0
@@ -1064,7 +1064,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &4976954809421367755
 MonoBehaviour:
@@ -3422,7 +3422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 581.7}
+  m_AnchoredPosition: {x: 0, y: 581.7007}
   m_SizeDelta: {x: 0, y: 844.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4035875137260840312
@@ -3727,8 +3727,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 139505713655200756}
   m_HandleRect: {fileID: 4367815960284876450}
   m_Direction: 2
-  m_Value: -0.00000015738821
-  m_Size: 0.31135312
+  m_Value: -0.0000011541804
+  m_Size: 0.31135315
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4005,8 +4005,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 967080866433731995}
   m_HandleRect: {fileID: 2505548960530648230}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.31135312
+  m_Value: 1.0000001
+  m_Size: 0.31135315
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4646,7 +4646,7 @@ Canvas:
   m_GameObject: {fileID: 4885397406267201778}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.47
   m_PixelPerfect: 0
@@ -4659,7 +4659,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!114 &4401067421159423460
 MonoBehaviour:
@@ -6172,7 +6172,7 @@ Canvas:
   m_GameObject: {fileID: 6251293387202342267}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.61
   m_PixelPerfect: 0
@@ -6185,7 +6185,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &708184480931506281
 MonoBehaviour:
@@ -6623,7 +6623,7 @@ Canvas:
   m_GameObject: {fileID: 6875667632137255907}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.57
   m_PixelPerfect: 0
@@ -6636,7 +6636,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &4710037681904168065
 MonoBehaviour:
@@ -7574,7 +7574,7 @@ Canvas:
   m_GameObject: {fileID: 7315553318426413819}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.35
   m_PixelPerfect: 0
@@ -7587,7 +7587,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!114 &332201359114309032
 MonoBehaviour:
@@ -8279,7 +8279,7 @@ Canvas:
   m_GameObject: {fileID: 7964628779839926685}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 5251263316815701243}
   m_PlaneDistance: 0.65
   m_PixelPerfect: 0
@@ -8671,7 +8671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: -47.3}
+  m_AnchoredPosition: {x: 0.000015258789, y: -47.300003}
   m_SizeDelta: {x: -11.2, y: 27.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6910159084181088351

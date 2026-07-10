@@ -105,3 +105,8 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 /FearGame/Library
+/InventoryTest/InventoryTest/Library
+/FearGame_UpdatedDemo/FearGame_UpdatedDemo/Library
+/InventoryTest/InventoryTest/obj
+/FearGame_UpdatedDemo/FearGame_UpdatedDemo/obj
+/FearGame/UserSettings
