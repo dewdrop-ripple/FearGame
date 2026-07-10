@@ -4,7 +4,7 @@ using UnityEngine;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.Rendering.VolumeComponent;
 
-public class SC_StorageManager : MonoBehaviour
+public class SC_StorageUnit : MonoBehaviour
 {
     public enum StorageType
     {
@@ -14,7 +14,7 @@ public class SC_StorageManager : MonoBehaviour
 
 
     [SerializeField] private List<GameObject> itemSlotObjects;
-    [SerializeField] private List<SC_ItemManager> items;
+    [SerializeField] private List<SC_Item> items;
 
     [SerializeField] private GameObject inactiveItemsParent;
     [SerializeField] private GameObject activeItemsParent;
@@ -24,6 +24,9 @@ public class SC_StorageManager : MonoBehaviour
     private SC_GameManager gameManager;
 
     [SerializeField] private bool isOpen;
+    [SerializeField] private Canvas mainCanvas;
+
+    [SerializeField] private GameObject infoPanel;
 
 
     private void Awake()
@@ -37,6 +40,7 @@ public class SC_StorageManager : MonoBehaviour
     private void Start()
     {
         gameManager = FindAnyObjectByType<SC_GameManager>();
+        activeItemsParent = gameManager.GetForegroundCanvas();
     }
 
     private void Update()
@@ -111,7 +115,7 @@ public class SC_StorageManager : MonoBehaviour
         items[index] = null;
     }
 
-    public void AddItemToSlot(int index, SC_ItemManager item)
+    public void AddItemToSlot(int index, SC_Item item)
     {
         if (index < 0 || index >= itemSlotObjects.Count)
         {
@@ -133,7 +137,7 @@ public class SC_StorageManager : MonoBehaviour
 
     public void SwapSlots(int index1, int index2)
     {
-        SC_ItemManager temp = items[index1];
+        SC_Item temp = items[index1];
         items[index1] = items[index2];
         items[index2] = temp;
 
@@ -144,12 +148,12 @@ public class SC_StorageManager : MonoBehaviour
         items[index2].SetSlot(index2);
     }
 
-    public void SwapAcrossUnits(SC_StorageManager otherUnit, int thisUnitSlot, int otherUnitSlot)
+    public void SwapAcrossUnits(SC_StorageUnit otherUnit, int thisUnitSlot, int otherUnitSlot)
     {
         otherUnit.GetSlotItem(otherUnitSlot).SetStorageManager(this);
         GetSlotItem(thisUnitSlot).SetStorageManager(otherUnit);
 
-        SC_ItemManager temp = items[thisUnitSlot];
+        SC_Item temp = items[thisUnitSlot];
 
         SetSlotItem(thisUnitSlot, otherUnit.GetSlotItem(otherUnitSlot));
         otherUnit.SetSlotItem(otherUnitSlot, temp);
@@ -164,12 +168,38 @@ public class SC_StorageManager : MonoBehaviour
         GetSlotItem(thisUnitSlot).transform.SetParent(GetInactiveParent().transform, true);
     }
 
-    public SC_ItemManager GetSlotItem(int index)
+    public bool IsFilled()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] == null)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int GetNextOpenSlot()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] == null)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public SC_Item GetSlotItem(int index)
     {
         return items[index];
     }
 
-    public void SetSlotItem(int index, SC_ItemManager item)
+    public void SetSlotItem(int index, SC_Item item)
     {
         items[index] = item;
     }
@@ -182,5 +212,22 @@ public class SC_StorageManager : MonoBehaviour
     public StorageType GetStorageType()
     {
         return storageType;
+    }
+
+    public void OpenMenu()
+    {
+        isOpen = true;
+        mainCanvas.enabled = true;
+    }
+
+    public void CloseMenu()
+    {
+        isOpen = false;
+        mainCanvas.enabled = false;
+    }
+
+    public GameObject GetInfoPanel()
+    {
+        return infoPanel;
     }
 }

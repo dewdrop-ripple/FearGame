@@ -10,18 +10,18 @@ public class SC_ItemInfoPanel : MonoBehaviour
 
     [SerializeField] private bool isVisible = false;
 
-    [SerializeField] private SC_ItemManager targetItem;
+    [SerializeField] private SC_Item targetItem;
 
     [SerializeField] private Vector3 targetPosition;
-    [SerializeField] private Vector3 hiddenPosition;
+    private Vector3 hiddenPosition;
 
     [SerializeField] private float disappearDelay;
     [SerializeField] private float time = -1.0f;
 
 
-    private void Start()
+    private void Awake()
     {
-        hiddenPosition = transform.position;
+        hiddenPosition = new Vector3(Screen.width * 2.0f, 0.0f, 0.0f);
         targetPosition = hiddenPosition;
     }
 
@@ -75,7 +75,7 @@ public class SC_ItemInfoPanel : MonoBehaviour
         }
     }
 
-    public void OpenMenu(SC_ItemManager target)
+    public void OpenMenu(SC_Item target)
     {
         isVisible = false;
 
@@ -91,5 +91,15 @@ public class SC_ItemInfoPanel : MonoBehaviour
     public void DebugLogMessage(string message)
     {
         Debug.Log(message);
+    }
+
+    public void DropTargetItem()
+    {
+        targetItem.Drop(FindAnyObjectByType<SC_Player>().transform.position);
+    }
+
+    public void UseTargetItem()
+    {
+        targetItem.Use(FindAnyObjectByType<SC_Player>());
     }
 }

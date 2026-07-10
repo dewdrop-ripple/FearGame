@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SC_ItemManager : MonoBehaviour
+public class SC_Item : MonoBehaviour
 {
     public enum ItemState
     {
@@ -34,9 +34,7 @@ public class SC_ItemManager : MonoBehaviour
     {
         gameManager = FindAnyObjectByType<SC_GameManager>();
 
-        icon = GetComponent<UnityEngine.UI.Image>();
-
-        StartUI();
+        if (state == ItemState.STORED) StartUI();
     }
 
     private void Update()
@@ -75,18 +73,20 @@ public class SC_ItemManager : MonoBehaviour
 
     private bool isClicked = false;
 
-    private UnityEngine.UI.Image icon;
+    [SerializeField] private UnityEngine.UI.Image icon;
     private Color baseColor;
     private Color selectedColor;
 
     private bool showInfo = false;
-    [SerializeField] private GameObject infoPanel;
 
-    [SerializeField] private SC_StorageManager storageManager;
+    [SerializeField] private SC_StorageUnit storageManager;
     [SerializeField] private int storedSlot;
 
+    [SerializeField] private GameObject modelObject;
+    [SerializeField] private GameObject UIObject;
 
-    private void StartUI()
+
+    public void StartUI()
     {
         storageManager.AddItemToSlot(storedSlot, this);
 
@@ -135,9 +135,9 @@ public class SC_ItemManager : MonoBehaviour
             {
                 showInfo = true;
                 
-                if(infoPanel.GetComponent<SC_ItemInfoPanel>() != null)
+                if(storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>() != null)
                 {
-                    infoPanel.GetComponent<SC_ItemInfoPanel>().OpenMenu(this);
+                    storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>().OpenMenu(this);
                 }
             }
             else
@@ -164,6 +164,8 @@ public class SC_ItemManager : MonoBehaviour
             targetUIPosition = oldUIPosition;
 
             transform.SetParent(storageManager.GetInactiveParent().transform, true);
+
+            storageManager.SetSlotPos(storedSlot, storageManager.GetSlotPos(storedSlot));
         }
 
         transform.position = targetUIPosition;
@@ -175,16 +177,16 @@ public class SC_ItemManager : MonoBehaviour
         {
             showInfo = false;
 
-            if (infoPanel.GetComponent<SC_ItemInfoPanel>() != null)
+            if (storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>() != null)
             {
-                infoPanel.GetComponent<SC_ItemInfoPanel>().CloseMenu();
+                storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>().CloseMenu();
             }
         }
     }
 
     private void PickNewSlot()
     {
-        if (storageManager.GetStorageType() == SC_StorageManager.StorageType.INVENTORY)
+        if (storageManager.GetStorageType() == SC_StorageUnit.StorageType.INVENTORY)
         {
             if (transform.position.x < Screen.width / 2.0f) // Still Here
             {
@@ -192,7 +194,14 @@ public class SC_ItemManager : MonoBehaviour
             }
             else
             {
-                CheckNewStorageUnit(gameManager.GetOpenStorageUnit());
+                if (gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
+                {
+                    CheckNewStorageUnit(gameManager.GetOpenStorageUnit());
+                }
+                else
+                {
+                    CheckCurrentStorageUnit();
+                }
             }
         }
         else
@@ -220,7 +229,7 @@ public class SC_ItemManager : MonoBehaviour
         storedSlot = slot;
     }
 
-    public void SetUnit(SC_StorageManager newStorageManager)
+    public void SetUnit(SC_StorageUnit newStorageManager)
     {
         storageManager = newStorageManager;
     }
@@ -246,7 +255,7 @@ public class SC_ItemManager : MonoBehaviour
         }
     }
 
-    public void CheckNewStorageUnit(SC_StorageManager newStorageUnit)
+    public void CheckNewStorageUnit(SC_StorageUnit newStorageUnit)
     {
         int nearestSlot = newStorageUnit.GetNearestSlot(targetUIPosition);
 
@@ -269,7 +278,7 @@ public class SC_ItemManager : MonoBehaviour
         }
     }
 
-    public void SetStorageManager(SC_StorageManager manager)
+    public void SetStorageManager(SC_StorageUnit manager)
     {
         storageManager = manager;
     }
@@ -279,6 +288,75 @@ public class SC_ItemManager : MonoBehaviour
 
     private void ObjectUpdate()
     {
+    }
 
+    private void SetState(ItemState state)
+    {
+        this.state = state; 
+    }
+
+    private int GetSlot()
+    {
+        return storedSlot;
+    }
+
+    public void PickUp(SC_StorageUnit unit)
+    {
+        if (unit.IsFilled())
+        {
+            return;
+        }
+
+        GameObject newItem = Instantiate(UIObject);
+        SC_Item newItemLogic = newItem.GetComponent<SC_Item>();
+
+        newItemLogic.SetState(ItemState.STORED);
+
+        newItemLogic.SetStorageManager(unit);
+        newItemLogic.transform.SetParent(unit.GetInactiveParent().transform, false);
+
+        newItemLogic.SetSlot(unit.GetNextOpenSlot());
+        unit.AddItemToSlot(newItemLogic.GetSlot(), newItemLogic);
+
+        unit.SetSlotPos(newItemLogic.GetSlot(), unit.GetSlotPos(newItemLogic.GetSlot()));
+
+        newItemLogic.StartUI();
+
+        Destroy(gameObject);
+    }
+
+    public void Drop(Vector3 location)
+    {
+        GameObject newItem = Instantiate(modelObject);
+        SC_Item newItemLogic = newItem.GetComponent<SC_Item>();
+
+        newItemLogic.SetState(ItemState.DROPPED);
+
+        newItemLogic.transform.position = location;
+
+        storageManager.RemoveItemFromSlot(storedSlot);
+
+        Destroy(gameObject);
+    }
+
+    public void Use(SC_Player player)
+    {
+        switch(effectType)
+        {
+            case EffectType.HEALTH:
+                player.SetHealth(player.GetHealth() + effectStrength);
+                break;
+
+            case EffectType.HUNGER:
+                player.SetHunger(player.GetHunger() + effectStrength);
+                break;
+
+            case EffectType.ADRENALINE:
+                player.SetAdrenaline(player.GetAdrenaline() + effectStrength);
+                break;
+        }
+
+        storageManager.RemoveItemFromSlot(storedSlot);
+        Destroy(gameObject);
     }
 }
