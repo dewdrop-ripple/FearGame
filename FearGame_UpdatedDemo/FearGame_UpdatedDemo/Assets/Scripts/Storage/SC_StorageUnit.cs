@@ -223,6 +223,8 @@ public class SC_StorageUnit : MonoBehaviour
     public void CloseMenu()
     {
         isOpen = false;
+        infoPanel.GetComponent<SC_ItemInfoPanel>().ClearTargetItem();
+        infoPanel.GetComponent<SC_ItemInfoPanel>().CloseMenu();
         mainCanvas.enabled = false;
     }
 

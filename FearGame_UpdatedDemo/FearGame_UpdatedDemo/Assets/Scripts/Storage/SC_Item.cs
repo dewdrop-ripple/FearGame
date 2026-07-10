@@ -61,6 +61,36 @@ public class SC_Item : MonoBehaviour
         return itemDescription;
     }
 
+    public EffectType GetEffectType()
+    {
+        return effectType;
+    }
+
+    public float GetEffectStrength()
+    {
+        return effectStrength;
+    }
+
+    public void SetName(string name)
+    {
+        itemName = name;
+    }
+
+    public void SetDescription(string description)
+    {
+        itemDescription = description;
+    }
+
+    public void SetEffectType(EffectType type)
+    {
+        effectType = type;
+    }
+
+    public void SetEffectStrength(float strength)
+    {
+        effectStrength = strength;
+    }
+
 
     // --- UI SYSTEMS --- //
 
@@ -311,6 +341,10 @@ public class SC_Item : MonoBehaviour
         SC_Item newItemLogic = newItem.GetComponent<SC_Item>();
 
         newItemLogic.SetState(ItemState.STORED);
+        newItemLogic.SetName(itemName);
+        newItemLogic.SetDescription(itemDescription);
+        newItemLogic.SetEffectType(effectType);
+        newItemLogic.SetEffectStrength(effectStrength);
 
         newItemLogic.SetStorageManager(unit);
         newItemLogic.transform.SetParent(unit.GetInactiveParent().transform, false);
@@ -331,6 +365,10 @@ public class SC_Item : MonoBehaviour
         SC_Item newItemLogic = newItem.GetComponent<SC_Item>();
 
         newItemLogic.SetState(ItemState.DROPPED);
+        newItemLogic.SetName(itemName);
+        newItemLogic.SetDescription(itemDescription);
+        newItemLogic.SetEffectType(effectType);
+        newItemLogic.SetEffectStrength(effectStrength);
 
         newItemLogic.transform.position = location;
 

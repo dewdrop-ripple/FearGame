@@ -93,6 +93,11 @@ public class SC_ItemInfoPanel : MonoBehaviour
         Debug.Log(message);
     }
 
+    public void ClearTargetItem()
+    {
+        targetItem = null;
+    }
+
     public void DropTargetItem()
     {
         targetItem.Drop(FindAnyObjectByType<SC_Player>().transform.position);

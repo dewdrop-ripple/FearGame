@@ -54,6 +54,12 @@ public class SC_Player : MonoBehaviour
     [SerializeField] private float baseRotationSpeed;
     [SerializeField] private float baseSprintStaminaDrain;
     [SerializeField] private float baseJumpStaminaDrain;
+    [SerializeField] private float baseHungerDrain;
+
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float maxStamina;
+    [SerializeField] private float maxHunger;
+    [SerializeField] private float maxAdrenaline;
 
     [SerializeField] private float health;
     [SerializeField] private float stamina;
@@ -131,14 +137,11 @@ public class SC_Player : MonoBehaviour
         {
             if (gameManager.GetGameState() == SC_GameManager.GameState.INVENTORY)
             {
-                SetPaused(false);
                 gameManager.SetGameState(SC_GameManager.GameState.PLAYING);
             }
             else
             {
-                SetPaused(!isPaused);
-
-                if (isPaused)
+                if (!isPaused)
                 {
                     gameManager.SetGameState(SC_GameManager.GameState.PAUSED);
                 }
@@ -151,24 +154,34 @@ public class SC_Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED)
+            if (gameManager.GetGameState() == SC_GameManager.GameState.PLAYING)
             {
-
+                gameManager.SetGameState(SC_GameManager.GameState.INVENTORY);
             }
-            else
+            else if (gameManager.GetGameState() == SC_GameManager.GameState.INVENTORY)
             {
-                SetPaused(!isPaused);
-
-                if (isPaused)
-                {
-                    gameManager.SetGameState(SC_GameManager.GameState.INVENTORY);
-                }
-                else
-                {
-                    gameManager.SetGameState(SC_GameManager.GameState.PLAYING);
-                }
+                gameManager.SetGameState(SC_GameManager.GameState.PLAYING);
             }
         }
+
+        switch (gameManager.GetGameState())
+        {
+            case SC_GameManager.GameState.PAUSED:
+            case SC_GameManager.GameState.INVENTORY:
+            case SC_GameManager.GameState.LOOTING:
+                SetPaused(true);
+                break;
+
+            case SC_GameManager.GameState.PLAYING:
+                SetPaused(false);
+                break;
+        }
+
+        if (stamina < maxStamina && !isRunning)
+        {
+            stamina += baseSprintStaminaDrain / 3.0f * Time.deltaTime;
+        }
+        hunger -= baseHungerDrain * Time.deltaTime;
     }
 
     private void Move()
@@ -358,5 +371,30 @@ public class SC_Player : MonoBehaviour
     public float GetAdrenaline()
     {
         return adrenaline;
+    }
+
+    public float GetStamina()
+    {
+        return stamina;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public float GetMaxHunger()
+    {
+        return maxHunger;
+    }
+
+    public float GetMaxAdrenaline()
+    {
+        return maxAdrenaline;
+    }
+
+    public float GetMaxStamina()
+    {
+        return maxStamina;
     }
 }
