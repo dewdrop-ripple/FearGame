@@ -1331,7 +1331,7 @@ GameObject:
   - component: {fileID: 2357640377830501324}
   m_Layer: 0
   m_Name: PR_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   baseRotationSpeed: 40
   baseSprintStaminaDrain: 15
   baseJumpStaminaDrain: 5
-  baseHungerDrain: 2
+  baseHungerDrain: 0.25
   maxHealth: 100
   maxStamina: 100
   maxHunger: 100
@@ -1440,6 +1440,7 @@ MonoBehaviour:
   hunger: 100
   adrenaline: 100
   lineOfSight: {fileID: 8591990339548942496}
+  corpse: {fileID: 23099431517745550, guid: 6962f4df7f1403b44aca2f10e581e52b, type: 3}
 --- !u!1001 &1427174034337760750
 PrefabInstance:
   m_ObjectHideFlags: 0

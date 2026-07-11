@@ -69,6 +69,9 @@ public class SC_Player : MonoBehaviour
     // Picking up items
     [SerializeField] SC_LineOfSight lineOfSight;
 
+    // Death
+    [SerializeField] private GameObject corpse;
+
 
     private void Start()
     {
@@ -93,6 +96,9 @@ public class SC_Player : MonoBehaviour
 
         LockCursor(); // Lock cursor after game start
     }
+
+
+    // --- Movement and Data --- //
 
     private void UpdateCharacterData()
     {
@@ -182,6 +188,11 @@ public class SC_Player : MonoBehaviour
             stamina += baseSprintStaminaDrain / 3.0f * Time.deltaTime;
         }
         hunger -= baseHungerDrain * Time.deltaTime;
+
+        if (health <= 0)
+        {
+            Die();
+        }
     }
 
     private void Move()
@@ -328,6 +339,29 @@ public class SC_Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+
+
+    // --- Damage --- //
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+    }
+
+    public void Die()
+    {
+        GameObject deadBody = Instantiate(corpse);
+        deadBody.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        deadBody.transform.rotation = transform.rotation;
+
+        SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_Corpse>().GetStorageUnit();
+        gameManager.GetInventory().TransferAllItemsTo(deadBodyStorage);
+
+        Destroy(gameObject);
+    }
+
+
+    // --- Utility --- //
 
     public void SetPaused(bool paused)
     {

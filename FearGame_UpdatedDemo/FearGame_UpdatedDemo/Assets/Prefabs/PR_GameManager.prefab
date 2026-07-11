@@ -52,6 +52,7 @@ MonoBehaviour:
   inventory: {fileID: 0}
   backgroundCanavs: {fileID: 4328242424499137164}
   foregroundCanavs: {fileID: 8358803516153143057}
+  player: {fileID: 8905500001843066706, guid: ed90f6bbf3afcdc4aa9a2c993186e046, type: 3}
 --- !u!1001 &52125126542232994
 PrefabInstance:
   m_ObjectHideFlags: 0

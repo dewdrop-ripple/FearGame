@@ -72,6 +72,13 @@ public class SC_GameManager : MonoBehaviour
 
             newState = false;
         }
+
+        if (GameObject.FindGameObjectsWithTag("Player").Length < 1)
+        {
+            GameObject spawnedPlayer = Instantiate(player);
+            spawnedPlayer.transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.position;
+            spawnedPlayer.transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.rotation;
+        }
     }
 
 
@@ -118,4 +125,9 @@ public class SC_GameManager : MonoBehaviour
     {
         return foregroundCanavs;
     }
+
+
+    // --- Player Spawn --- //
+
+    [SerializeField] GameObject player;
 }

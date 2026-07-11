@@ -24,4 +24,9 @@ public class SC_Corpse : MonoBehaviour
         gameManager.CloseStorageUnit();
         gameManager.SetGameState(SC_GameManager.GameState.PLAYING);
     }
+
+    public SC_StorageUnit GetStorageUnit()
+    {
+        return storageUnit;
+    }
 }

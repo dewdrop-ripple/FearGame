@@ -232,4 +232,21 @@ public class SC_StorageUnit : MonoBehaviour
     {
         return infoPanel;
     }
+
+    public void TransferAllItemsTo(SC_StorageUnit other)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (!SlotIsOpen(i))
+            {
+                items[i].SetStorageManager(other);
+                other.SetSlotItem(i, items[i]);
+                other.SetSlotPos(i, other.GetSlotPos(i));
+                other.GetSlotItem(i).SetSlot(i);
+                other.GetSlotItem(i).transform.SetParent(other.GetInactiveParent().transform, true);
+
+                RemoveItemFromSlot(i);
+            }
+        }
+    }
 }
