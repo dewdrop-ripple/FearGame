@@ -241,9 +241,9 @@ public class SC_StorageUnit : MonoBehaviour
             {
                 items[i].SetStorageManager(other);
                 other.SetSlotItem(i, items[i]);
+                other.GetSlotItem(i).transform.SetParent(other.GetInactiveParent().transform, true);
                 other.SetSlotPos(i, other.GetSlotPos(i));
                 other.GetSlotItem(i).SetSlot(i);
-                other.GetSlotItem(i).transform.SetParent(other.GetInactiveParent().transform, true);
 
                 RemoveItemFromSlot(i);
             }

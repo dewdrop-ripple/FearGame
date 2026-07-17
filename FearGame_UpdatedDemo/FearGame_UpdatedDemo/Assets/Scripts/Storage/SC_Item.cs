@@ -132,6 +132,8 @@ public class SC_Item : MonoBehaviour
 
     private void UIUpdate()
     {
+        transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
         // Controls
         if (Input.GetMouseButtonDown(0)) // Left Click
         {
