@@ -5,7 +5,7 @@ public class SC_LineOfSight : MonoBehaviour
     private SC_GameManager gameManager;
 
     private SC_Item targetItem = null;
-    private SC_Corpse targetCorpse = null;
+    private SC_StorageObject taregtStorageObject = null;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class SC_LineOfSight : MonoBehaviour
         }
         else if (other.tag == "Corpse")
         {
-            targetCorpse = other.GetComponent<SC_Corpse>();
+            taregtStorageObject = other.GetComponent<SC_StorageObject>();
         }
     }
 
@@ -32,7 +32,7 @@ public class SC_LineOfSight : MonoBehaviour
         }
         else if (other.tag == "Corpse")
         {
-            targetCorpse = other.GetComponent<SC_Corpse>();
+            taregtStorageObject = other.GetComponent<SC_StorageObject>();
         }
     }
 
@@ -44,7 +44,7 @@ public class SC_LineOfSight : MonoBehaviour
         }
         else if (other.tag == "Corpse")
         {
-            targetCorpse = null;
+            taregtStorageObject = null;
         }
     }
 
@@ -54,9 +54,9 @@ public class SC_LineOfSight : MonoBehaviour
         {
             targetItem.PickUp(gameManager.GetInventory());
         }
-        else if (targetCorpse)
+        else if (taregtStorageObject)
         {
-            targetCorpse.Open();
+            taregtStorageObject.Open();
         }
     }    
 }

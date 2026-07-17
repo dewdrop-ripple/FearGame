@@ -1440,7 +1440,7 @@ MonoBehaviour:
   hunger: 100
   adrenaline: 100
   lineOfSight: {fileID: 8591990339548942496}
-  corpse: {fileID: 23099431517745550, guid: 6962f4df7f1403b44aca2f10e581e52b, type: 3}
+  corpse: {fileID: 160071326359366962, guid: e15844edc6877654da31333cf45d7804, type: 3}
 --- !u!1001 &1427174034337760750
 PrefabInstance:
   m_ObjectHideFlags: 0

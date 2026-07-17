@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SC_Corpse : MonoBehaviour
+public class SC_StorageObject : MonoBehaviour
 {
     private SC_GameManager gameManager;
 

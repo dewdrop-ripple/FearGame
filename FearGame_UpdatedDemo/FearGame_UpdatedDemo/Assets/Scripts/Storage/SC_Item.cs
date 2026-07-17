@@ -222,16 +222,19 @@ public class SC_Item : MonoBehaviour
         {
             if (transform.position.x < Screen.width / 2.0f) // Still Here
             {
+                Debug.Log("Checking Own Unit - On Inventory");
                 CheckCurrentStorageUnit();
             }
             else
             {
                 if (gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
                 {
+                    Debug.Log("Checking Other Unit - On Storage");
                     CheckNewStorageUnit(gameManager.GetOpenStorageUnit());
                 }
                 else
                 {
+                    Debug.Log("Checking Own Unit - Other Menu Not Open");
                     CheckCurrentStorageUnit();
                 }
             }
@@ -240,10 +243,12 @@ public class SC_Item : MonoBehaviour
         {
             if (transform.position.x > Screen.width / 2.0f) // Still Here
             {
+                Debug.Log("Checking Own Unit - On Storage");
                 CheckCurrentStorageUnit();
             }
             else
             {
+                Debug.Log("Checking Other Unit - On Inventory");
                 CheckNewStorageUnit(gameManager.GetInventory());
             }
         }

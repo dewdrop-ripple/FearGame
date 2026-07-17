@@ -354,7 +354,7 @@ public class SC_Player : MonoBehaviour
         deadBody.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
         deadBody.transform.rotation = transform.rotation;
 
-        SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_Corpse>().GetStorageUnit();
+        SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_StorageObject>().GetStorageUnit();
         gameManager.GetInventory().TransferAllItemsTo(deadBodyStorage);
 
         Destroy(gameObject);

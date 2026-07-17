@@ -78,9 +78,12 @@ public class SC_StorageUnit : MonoBehaviour
         {
             if (yDistance < itemSlotObjects[closestSlot].GetComponent<RectTransform>().rect.height * Screen.height / 1250.0f * 1.35f)
             {
+                Debug.Log("Nearest Slot: " + closestSlot);
                 return closestSlot;
             }
         }
+
+        Debug.Log("No Nearby Slot");
 
         return -1;
     }
@@ -89,9 +92,19 @@ public class SC_StorageUnit : MonoBehaviour
     {
         if (index < 0 || index >= itemSlotObjects.Count)
         {
+            Debug.Log("Slot " + index + " Does Not Exist");
             return false;
         }
 
+        if (items[index] == null)
+        {
+            Debug.Log("Slot " + index + " is Open");
+        }
+        else
+        {
+            Debug.Log("Slot " + index + " is Not Open");
+        }
+            
         return items[index] == null;
     }
 
