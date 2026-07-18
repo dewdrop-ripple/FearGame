@@ -7,9 +7,25 @@ public class SC_LineOfSight : MonoBehaviour
     private SC_Item targetItem = null;
     private SC_StorageObject taregtStorageObject = null;
 
+    [SerializeField] private UnityEngine.UI.Image crosshair;
+    [SerializeField] private Color noTargetColor;
+    [SerializeField] private Color targetColor;
+
     private void Start()
     {
         gameManager = FindAnyObjectByType<SC_GameManager>();
+    }
+
+    private void Update()
+    {
+        if (targetItem == null && taregtStorageObject == null)
+        {
+            crosshair.color = noTargetColor;
+        }
+        else
+        {
+            crosshair.color = targetColor;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

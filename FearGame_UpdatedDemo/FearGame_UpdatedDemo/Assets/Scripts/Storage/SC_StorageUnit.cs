@@ -28,6 +28,9 @@ public class SC_StorageUnit : MonoBehaviour
 
     [SerializeField] private GameObject infoPanel;
 
+    [SerializeField] private Color slotBaseColor;
+    [SerializeField] private Color slotSelectedColor;
+
 
     private void Awake()
     {
@@ -48,10 +51,6 @@ public class SC_StorageUnit : MonoBehaviour
         if (storageType == StorageType.INVENTORY)
         {
             gameManager.SetInventory(this);
-        }
-        else if (storageType == StorageType.OTHER && isOpen)
-        {
-            gameManager.SetOpenStorageUnit(this);
         }
     }
 
@@ -78,12 +77,9 @@ public class SC_StorageUnit : MonoBehaviour
         {
             if (yDistance < itemSlotObjects[closestSlot].GetComponent<RectTransform>().rect.height * Screen.height / 1250.0f * 1.35f)
             {
-                Debug.Log("Nearest Slot: " + closestSlot);
                 return closestSlot;
             }
         }
-
-        Debug.Log("No Nearby Slot");
 
         return -1;
     }
@@ -92,17 +88,7 @@ public class SC_StorageUnit : MonoBehaviour
     {
         if (index < 0 || index >= itemSlotObjects.Count)
         {
-            Debug.Log("Slot " + index + " Does Not Exist");
             return false;
-        }
-
-        if (items[index] == null)
-        {
-            Debug.Log("Slot " + index + " is Open");
-        }
-        else
-        {
-            Debug.Log("Slot " + index + " is Not Open");
         }
             
         return items[index] == null;
@@ -260,6 +246,48 @@ public class SC_StorageUnit : MonoBehaviour
 
                 RemoveItemFromSlot(i);
             }
+        }
+    }
+
+    public void TransferItemTo(SC_StorageUnit other, int index)
+    {
+        int slot = other.GetNextOpenSlot();
+
+        if (!SlotIsOpen(index))
+        {
+            items[index].SetStorageManager(other);
+            other.SetSlotItem(slot, items[index]);
+            other.GetSlotItem(slot).transform.SetParent(other.GetInactiveParent().transform, true);
+            other.SetSlotPos(slot, other.GetSlotPos(slot));
+            other.GetSlotItem(slot).SetSlot(slot);
+
+            RemoveItemFromSlot(index);
+        }
+    }
+
+    public GameObject GetSlot(int index)
+    {
+        return itemSlotObjects[index];
+    }
+
+    public void SetHighlightedSlot(int slot)
+    {
+        for (int i = 0; i < itemSlotObjects.Count; i++)
+        {
+            itemSlotObjects[i].GetComponent<UnityEngine.UI.Image>().color = slotBaseColor;
+        }
+
+        if (slot >= 0 && slot < itemSlotObjects.Count)
+        {
+            itemSlotObjects[slot].GetComponent<UnityEngine.UI.Image>().color = slotSelectedColor;
+        }
+    }
+
+    public void UnhighlightAllSlots()
+    {
+        for (int i = 0; i < itemSlotObjects.Count; i++)
+        {
+            itemSlotObjects[i].GetComponent<UnityEngine.UI.Image>().color = slotBaseColor;
         }
     }
 }

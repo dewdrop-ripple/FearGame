@@ -102,10 +102,13 @@ public class SC_Item : MonoBehaviour
     [SerializeField] private float iconCollisionRadius;
 
     private bool isClicked = false;
+    private bool isHovered = false;
 
     [SerializeField] private UnityEngine.UI.Image icon;
-    private Color baseColor;
-    private Color selectedColor;
+    [SerializeField] private UnityEngine.UI.Image shadow;
+    [SerializeField] private Color baseColor;
+    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color hoverColor;
 
     private bool showInfo = false;
 
@@ -123,51 +126,95 @@ public class SC_Item : MonoBehaviour
         targetUIPosition = storageManager.GetSlotPos(storedSlot);
         oldUIPosition = targetUIPosition;
 
-        baseColor = icon.color;
-        selectedColor = new Color(baseColor.r / 2.0f, baseColor.g / 2.0f, baseColor.b / 2.0f);
-
         iconCollisionRadius = GetComponent<RectTransform>().rect.width;
         iconCollisionRadius *= Screen.height / 1250.0f;
     }
 
     private void UIUpdate()
     {
-        transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        // Hovering
+        Vector2 mouseScreenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        Vector2 position2D = new Vector2(oldUIPosition.x, oldUIPosition.y);
+
+        if (Vector2.Distance(mouseScreenPosition, position2D) < iconCollisionRadius)
+        {
+            isHovered = true;
+        }
+        else
+        {
+            isHovered = false;
+        }
 
         // Controls
         if (Input.GetMouseButtonDown(0)) // Left Click
         {
             HideInfo();
 
-            Vector2 mouseScreenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Vector2 position2D = new Vector2(oldUIPosition.x, oldUIPosition.y);
-
-            if (Vector2.Distance(mouseScreenPosition, position2D) < iconCollisionRadius)
+            if (isHovered)
             {
-                UISelectOffset = new Vector2(oldUIPosition.x - Input.mousePosition.x, oldUIPosition.y - Input.mousePosition.y);
+                if (Input.GetKey(KeyCode.LeftShift) ||  Input.GetKey(KeyCode.RightShift))
+                {
+                    if (storageManager.GetStorageType() == SC_StorageUnit.StorageType.INVENTORY)
+                    {
+                        if (gameManager.GetOpenStorageUnit() != null)
+                        {
+                            if (!gameManager.GetOpenStorageUnit().IsFilled())
+                            {
+                                storageManager.TransferItemTo(gameManager.GetOpenStorageUnit(), storedSlot);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!gameManager.GetInventory().IsFilled())
+                        {
+                            storageManager.TransferItemTo(gameManager.GetInventory(), storedSlot);
+                        }
+                    }
+                }
+                else
+                {
+                    UISelectOffset = new Vector2(oldUIPosition.x - Input.mousePosition.x, oldUIPosition.y - Input.mousePosition.y);
 
-                isClicked = true;
+                    isClicked = true;
+
+                    transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+                } 
             }
         }
         else if (Input.GetMouseButtonUp(0)) // Left Released
         {
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
             if (isClicked)
             {
                 PickNewSlot();
+
                 isClicked = false;
+
+                storageManager.UnhighlightAllSlots();
+
+                if (gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
+                {
+                    if (storageManager.GetStorageType() == SC_StorageUnit.StorageType.INVENTORY)
+                    {
+                        gameManager.GetOpenStorageUnit().UnhighlightAllSlots();
+                    }
+                    else
+                    {
+                        gameManager.GetInventory().UnhighlightAllSlots();
+                    }
+                }
             }
         }
 
         else if (Input.GetMouseButtonDown(1)) // Right Click
         {
-            Vector2 mouseScreenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Vector2 position2D = new Vector2(oldUIPosition.x, oldUIPosition.y);
-
-            if (Vector2.Distance(mouseScreenPosition, position2D) < iconCollisionRadius)
+            if (isHovered)
             {
                 showInfo = true;
-                
-                if(storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>() != null)
+
+                if (storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>() != null)
                 {
                     storageManager.GetInfoPanel().GetComponent<SC_ItemInfoPanel>().OpenMenu(this);
                 }
@@ -178,20 +225,77 @@ public class SC_Item : MonoBehaviour
             }
         }
 
+        // Nearest Slot
+        if (isClicked)
+        {
+            if (storageManager.GetStorageType() == SC_StorageUnit.StorageType.INVENTORY)
+            {
+                if (transform.position.x < Screen.width / 2.0f) // Still Here
+                {
+                    int nearestSlot = storageManager.GetNearestSlot(targetUIPosition);
+                    Debug.Log("On Inventory (self): " + nearestSlot);
+                    storageManager.SetHighlightedSlot(nearestSlot);
+                }
+                else
+                {
+                    if (gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
+                    {
+                        int nearestSlot = gameManager.GetOpenStorageUnit().GetNearestSlot(targetUIPosition);
+                        Debug.Log("On Storage (other): " + nearestSlot);
+                        gameManager.GetOpenStorageUnit().SetHighlightedSlot(nearestSlot);
+                        storageManager.UnhighlightAllSlots();
+                    }
+                    else
+                    {
+                        int nearestSlot = storageManager.GetNearestSlot(targetUIPosition);
+                        Debug.Log("Off Edge: " + nearestSlot);
+                        storageManager.SetHighlightedSlot(nearestSlot);
+                    }
+                }
+            }
+            else
+            {
+                if (transform.position.x > Screen.width / 2.0f) // Still Here
+                {
+                    int nearestSlot = storageManager.GetNearestSlot(targetUIPosition);
+                    Debug.Log("On Storage (self): " + nearestSlot);
+                    storageManager.SetHighlightedSlot(nearestSlot);
+                    gameManager.GetInventory().UnhighlightAllSlots();
+                }
+                else
+                {
+                    int nearestSlot = gameManager.GetInventory().GetNearestSlot(targetUIPosition);
+                    Debug.Log("On Inventory (other): " + nearestSlot);
+                    gameManager.GetInventory().SetHighlightedSlot(nearestSlot);
+                    storageManager.UnhighlightAllSlots();
+                }
+            }
+        }
 
         // Getting Dragged
         if (isClicked)
         {
             icon.color = selectedColor;
+            shadow.enabled = true;
 
-            Vector2 mouseScreenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             targetUIPosition = mouseScreenPosition + UISelectOffset;
 
             transform.SetParent(storageManager.GetActiveParent().transform, true);
         }
         else
         {
-            icon.color = baseColor;
+            if (isHovered)
+            {
+                icon.color = hoverColor;
+            }
+            else
+            {
+                icon.color = baseColor;
+            }
+
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+            shadow.enabled = false;
 
             targetUIPosition = oldUIPosition;
 
@@ -222,19 +326,16 @@ public class SC_Item : MonoBehaviour
         {
             if (transform.position.x < Screen.width / 2.0f) // Still Here
             {
-                Debug.Log("Checking Own Unit - On Inventory");
                 CheckCurrentStorageUnit();
             }
             else
             {
                 if (gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
                 {
-                    Debug.Log("Checking Other Unit - On Storage");
                     CheckNewStorageUnit(gameManager.GetOpenStorageUnit());
                 }
                 else
                 {
-                    Debug.Log("Checking Own Unit - Other Menu Not Open");
                     CheckCurrentStorageUnit();
                 }
             }
@@ -243,12 +344,10 @@ public class SC_Item : MonoBehaviour
         {
             if (transform.position.x > Screen.width / 2.0f) // Still Here
             {
-                Debug.Log("Checking Own Unit - On Storage");
                 CheckCurrentStorageUnit();
             }
             else
             {
-                Debug.Log("Checking Other Unit - On Inventory");
                 CheckNewStorageUnit(gameManager.GetInventory());
             }
         }

@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.b
-      value: 0.14568245
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.g
-      value: 0.246951
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.r
-      value: 0.36477977
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2205960716085828985, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Pivot.x
@@ -113,9 +113,37 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.g
+      value: 0.13733026
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.r
+      value: 0.26415092
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: modelObject
       value: 
       objectReference: {fileID: 2776179410502323200, guid: 2597cbe86875fdc43949ba940c93075c, type: 3}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.b
+      value: 0.09493288
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.g
+      value: 0.22396381
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.r
+      value: 0.40251565
+      objectReference: {fileID: 0}
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: effectStrength
       value: 10
@@ -123,6 +151,34 @@ PrefabInstance:
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: itemDescription
       value: Strength 10 Food
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.g
+      value: 0.06269807
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.r
+      value: 0.12578613
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: iconCollisionRadius
+      value: 24.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.g
+      value: 0.14768085
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.r
+      value: 0.2830189
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

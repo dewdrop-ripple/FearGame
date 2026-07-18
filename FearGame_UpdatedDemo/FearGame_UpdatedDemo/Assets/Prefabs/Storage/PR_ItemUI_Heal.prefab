@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.b
-      value: 0.10389214
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.g
-      value: 0.10389214
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1824101053613112504, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Color.r
-      value: 0.64779866
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2205960716085828985, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: m_Pivot.x
@@ -113,9 +113,33 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.b
+      value: 0.23300098
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.g
+      value: 0.23300098
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: baseColor.r
+      value: 0.7484276
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: modelObject
       value: 
       objectReference: {fileID: 2930897836877362365, guid: a2bd24c9631679042841ba74144c8746, type: 3}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.b
+      value: 0.4842766
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.g
+      value: 0.4842766
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: hoverColor.r
+      value: 0.9685534
+      objectReference: {fileID: 0}
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: effectStrength
       value: 10
@@ -123,6 +147,30 @@ PrefabInstance:
     - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
       propertyPath: itemDescription
       value: Strength 10 Heal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.b
+      value: 0.0059530404
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.g
+      value: 0.0059530404
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892681715487323117, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: selectedColor.r
+      value: 0.27044016
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045205661546669178, guid: e8b68537b68bec34d996b7858b86b929, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8490566
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
