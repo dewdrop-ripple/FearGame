@@ -535,7 +535,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728998143714268727}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -651,7 +651,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751094431297399469}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3647,6 +3647,7 @@ MonoBehaviour:
   hungerHealthDrainPerSecond: 0
   deathScreen: {fileID: 200357662061942476}
   pauseMenu: {fileID: 5941938151086036627}
+  isEnabled: 0
 --- !u!1 &9032595793942512420
 GameObject:
   m_ObjectHideFlags: 0

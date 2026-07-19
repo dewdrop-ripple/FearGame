@@ -102,6 +102,11 @@ public class SC_NPC : MonoBehaviour
 
     private void Update()
     {
+        if (gameManager.GetGameState() != SC_GameManager.GameState.TALKING)
+        {
+            isVisible = false;
+        }
+
         canvas.enabled = isVisible;
 
         if (isVisible)
@@ -118,7 +123,6 @@ public class SC_NPC : MonoBehaviour
             if (textNum == currentConversation.Count - 1)
             {
                 nextButton.interactable = false;
-                return;
             }
             else
             {

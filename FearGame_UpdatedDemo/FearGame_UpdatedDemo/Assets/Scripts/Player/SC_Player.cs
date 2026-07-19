@@ -84,6 +84,10 @@ public class SC_Player : MonoBehaviour
     // Pausing
     [SerializeField] private Canvas pauseMenu;
 
+    // Start Delay
+
+    [SerializeField] private bool isEnabled = false;
+
 
     private void Start()
     {
@@ -143,12 +147,18 @@ public class SC_Player : MonoBehaviour
 
     private void Update()
     {
+        deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
+        pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
+
+        if (!isEnabled)
+        {
+            return;
+        }
+
         if (time < immunityTime)
         {
             time += Time.deltaTime;
         }
-        
-        pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
 
         if (!isPaused)
         {
@@ -223,8 +233,6 @@ public class SC_Player : MonoBehaviour
                 SetPaused(false);
                 break;
         }
-
-        deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
 
         if (health <= 0)
         {
@@ -483,5 +491,13 @@ public class SC_Player : MonoBehaviour
     public float GetMaxStamina()
     {
         return maxStamina;
+    }
+
+
+    // --- Enabling --- //
+
+    public void Enable()
+    {
+        isEnabled = true;
     }
 }

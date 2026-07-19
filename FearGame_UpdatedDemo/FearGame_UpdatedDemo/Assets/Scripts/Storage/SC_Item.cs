@@ -132,6 +132,11 @@ public class SC_Item : MonoBehaviour
 
     private void UIUpdate()
     {
+        if (!storageManager.CheckIsOpen())
+        {
+            return;
+        }
+
         transform.rotation = Quaternion.identity;   
 
         // Hovering
@@ -154,7 +159,7 @@ public class SC_Item : MonoBehaviour
 
             if (isHovered)
             {
-                if (Input.GetKey(KeyCode.LeftShift) ||  Input.GetKey(KeyCode.RightShift))
+                if ((Input.GetKey(KeyCode.LeftShift) ||  Input.GetKey(KeyCode.RightShift)) && gameManager.GetGameState() == SC_GameManager.GameState.LOOTING)
                 {
                     if (storageManager.GetStorageType() == SC_StorageUnit.StorageType.INVENTORY)
                     {

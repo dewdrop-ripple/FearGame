@@ -17,6 +17,8 @@ public class SC_GameManager : MonoBehaviour
     [SerializeField] private GameState state;
     [SerializeField] private bool newState;
 
+    [SerializeField] private float playerSpawnDelay;
+    private float time;
 
     // Singleton
     private void Awake()
@@ -49,49 +51,48 @@ public class SC_GameManager : MonoBehaviour
             switch (state)
             {
                 case GameState.PLAYING:
-                    if (openStorageUnit != null) openStorageUnit.CloseMenu();
-                    if (targetNPC != null) targetNPC.Close();
-                    inventory.CloseMenu();
-                    backgroundCanavs.SetActive(false);
-                    break;
-
                 case GameState.PAUSED:
+                case GameState.DEAD:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
                     if (targetNPC != null) targetNPC.Close();
-                    inventory.CloseMenu();
-                    backgroundCanavs.SetActive(true);
+                    if (inventory != null) inventory.CloseMenu();
                     break;
 
                 case GameState.INVENTORY:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
                     if (targetNPC != null) targetNPC.Close();
-                    inventory.OpenMenu();
-                    backgroundCanavs.SetActive(true);
+                    if (inventory != null) inventory.OpenMenu();
                     break;
 
                 case GameState.LOOTING:
                     if (openStorageUnit != null) openStorageUnit.OpenMenu();
                     if (targetNPC != null) targetNPC.Close();
-                    inventory.OpenMenu();
-                    backgroundCanavs.SetActive(true);
+                    if (inventory != null) inventory.OpenMenu();
                     break;
 
                 case GameState.TALKING:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
                     if (targetNPC != null) targetNPC.Open();
-                    inventory.CloseMenu();
-                    backgroundCanavs.SetActive(true);
-                    break;
-
-                case GameState.DEAD:
-                    if (openStorageUnit != null) openStorageUnit.CloseMenu();
-                    if (targetNPC != null) targetNPC.Close();
-                    inventory.CloseMenu();
-                    backgroundCanavs.SetActive(false);
+                    if (inventory != null) inventory.CloseMenu();
                     break;
             }
 
             newState = false;
+        }
+
+        switch (state)
+        {
+            case GameState.PLAYING:
+            case GameState.DEAD:
+                backgroundCanavs.GetComponent<Canvas>().enabled = false;
+                break;
+
+            case GameState.PAUSED:
+            case GameState.INVENTORY:
+            case GameState.LOOTING:
+            case GameState.TALKING:
+                backgroundCanavs.GetComponent<Canvas>().enabled = true;
+                break;
         }
 
         if (GameObject.FindGameObjectsWithTag("Player").Length < 1 && GameObject.FindGameObjectsWithTag("PlayerSpawn").Length >= 1)
@@ -99,11 +100,22 @@ public class SC_GameManager : MonoBehaviour
             GameObject spawnedPlayer = Instantiate(player);
             spawnedPlayer.transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.position;
             spawnedPlayer.transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.rotation;
+            time = 0.0f;
         }
 
         if (SceneManager.GetActiveScene().name == "MP_StartMenu")
         {
             UnlockCursor();
+        }
+
+        if (time < playerSpawnDelay)
+        {
+            time += Time.deltaTime;
+        }
+        else if (time < 100000)
+        {
+            if(GameObject.FindGameObjectWithTag("Player")) GameObject.FindGameObjectWithTag("Player").GetComponent<SC_Player>().Enable();
+            time = 100001;
         }
     }
 
@@ -197,8 +209,7 @@ public class SC_GameManager : MonoBehaviour
 
     public void SceneChanged()
     {
-        state = GameState.PLAYING;
-        backgroundCanavs.SetActive(false);
+        SetGameState(GameState.PLAYING);
         LockCursor();
     }
 }

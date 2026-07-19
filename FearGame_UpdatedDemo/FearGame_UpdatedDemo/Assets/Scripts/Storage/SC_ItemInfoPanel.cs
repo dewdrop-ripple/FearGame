@@ -41,6 +41,26 @@ public class SC_ItemInfoPanel : MonoBehaviour
         {
             Vector2 offset = new Vector2(GetComponent<RectTransform>().rect.width * Screen.width / 2500.0f * 1.45f, GetComponent<RectTransform>().rect.height * Screen.height / 1250.0f * 1.35f);
             targetPosition = new Vector3(targetItem.transform.position.x + offset.x, targetItem.transform.position.y - offset.y, targetItem.transform.position.z);
+
+            float screenEdgeBuffer = Screen.width * 0.075f;
+
+            if (targetPosition.x + GetComponent<RectTransform>().rect.width + screenEdgeBuffer >= Screen.width)
+            {
+                targetPosition.x = Screen.width - screenEdgeBuffer - GetComponent<RectTransform>().rect.width;
+            }
+            else if (targetPosition.x - screenEdgeBuffer <= 0)
+            {
+                targetPosition.x = screenEdgeBuffer;
+            }
+
+            if (targetPosition.y + GetComponent<RectTransform>().rect.height + screenEdgeBuffer >= Screen.height)
+            {
+                targetPosition.y = Screen.height - screenEdgeBuffer - GetComponent<RectTransform>().rect.height;
+            }
+            else if (targetPosition.y - screenEdgeBuffer <= 0)
+            {
+                targetPosition.y = screenEdgeBuffer;
+            }
         }
         else
         {

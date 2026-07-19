@@ -48,6 +48,18 @@ public class SC_StorageUnit : MonoBehaviour
         if (storageType == StorageType.INVENTORY)
         {
             gameManager.SetInventory(this);
+            
+            if (!(gameManager.GetGameState() == SC_GameManager.GameState.INVENTORY || gameManager.GetGameState() == SC_GameManager.GameState.LOOTING))
+            {
+                CloseMenu();
+            }
+        }
+        else
+        {
+            if (gameManager.GetGameState() != SC_GameManager.GameState.LOOTING)
+            {
+                CloseMenu();
+            }
         }
     }
 
@@ -286,5 +298,10 @@ public class SC_StorageUnit : MonoBehaviour
         {
             itemSlotObjects[i].GetComponent<UnityEngine.UI.Image>().color = slotBaseColor;
         }
+    }
+
+    public bool CheckIsOpen()
+    {
+        return isOpen;
     }
 }

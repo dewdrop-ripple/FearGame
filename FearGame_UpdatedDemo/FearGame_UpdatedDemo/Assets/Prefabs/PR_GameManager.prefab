@@ -48,11 +48,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SC_GameManager
   state: 0
   newState: 0
+  playerSpawnDelay: 0.05
   openStorageUnit: {fileID: 0}
   inventory: {fileID: 0}
   backgroundCanavs: {fileID: 4328242424499137164}
   foregroundCanavs: {fileID: 8358803516153143057}
   player: {fileID: 8905500001843066706, guid: ed90f6bbf3afcdc4aa9a2c993186e046, type: 3}
+  targetNPC: {fileID: 0}
 --- !u!1001 &52125126542232994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -168,6 +170,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1377069857792150624}
     m_Modifications:
+    - target: {fileID: 482261134407291632, guid: 98c0783e132984a4ca253ef1f89294c3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 578990190322187651, guid: 98c0783e132984a4ca253ef1f89294c3, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -254,7 +260,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899497883896070003, guid: 98c0783e132984a4ca253ef1f89294c3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268184132310792529, guid: 98c0783e132984a4ca253ef1f89294c3, type: 3}
+      propertyPath: m_Color.a
+      value: 0.92941177
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
