@@ -6,6 +6,7 @@ public class SC_LineOfSight : MonoBehaviour
 
     private SC_Item targetItem = null;
     private SC_StorageObject taregtStorageObject = null;
+    private SC_NPC targetNPC = null;
 
     [SerializeField] private UnityEngine.UI.Image crosshair;
     [SerializeField] private Color noTargetColor;
@@ -18,7 +19,7 @@ public class SC_LineOfSight : MonoBehaviour
 
     private void Update()
     {
-        if (targetItem == null && taregtStorageObject == null)
+        if (targetItem == null && taregtStorageObject == null && targetNPC == null)
         {
             crosshair.color = noTargetColor;
         }
@@ -38,6 +39,10 @@ public class SC_LineOfSight : MonoBehaviour
         {
             taregtStorageObject = other.GetComponent<SC_StorageObject>();
         }
+        else if (other.tag == "NPC")
+        {
+            targetNPC = other.GetComponent<SC_NPC>();
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -49,6 +54,10 @@ public class SC_LineOfSight : MonoBehaviour
         else if (other.tag == "Corpse")
         {
             taregtStorageObject = other.GetComponent<SC_StorageObject>();
+        }
+        else if (other.tag == "NPC")
+        {
+            targetNPC = other.GetComponent<SC_NPC>();
         }
     }
 
@@ -62,6 +71,10 @@ public class SC_LineOfSight : MonoBehaviour
         {
             taregtStorageObject = null;
         }
+        else if (other.tag == "NPC")
+        {
+            targetNPC = null;
+        }
     }
 
     public void UseTargetedItem()
@@ -69,10 +82,15 @@ public class SC_LineOfSight : MonoBehaviour
         if (targetItem)
         {
             targetItem.PickUp(gameManager.GetInventory());
+            targetItem = null;
         }
         else if (taregtStorageObject)
         {
             taregtStorageObject.Open();
+        }
+        else if (targetNPC)
+        {
+            targetNPC.Open();
         }
     }    
 }

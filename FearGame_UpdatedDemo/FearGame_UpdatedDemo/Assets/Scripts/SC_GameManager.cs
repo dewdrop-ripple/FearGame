@@ -8,7 +8,8 @@ public class SC_GameManager : MonoBehaviour
         PLAYING,
         PAUSED,
         INVENTORY,
-        LOOTING
+        LOOTING,
+        TALKING
     }
 
     [SerializeField] private GameState state;
@@ -47,25 +48,36 @@ public class SC_GameManager : MonoBehaviour
             {
                 case GameState.PLAYING:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
+                    if (targetNPC != null) targetNPC.Close();
                     inventory.CloseMenu();
                     backgroundCanavs.SetActive(false);
                     break;
 
                 case GameState.PAUSED:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
+                    if (targetNPC != null) targetNPC.Close();
                     inventory.CloseMenu();
                     backgroundCanavs.SetActive(true);
                     break;
 
                 case GameState.INVENTORY:
                     if (openStorageUnit != null) openStorageUnit.CloseMenu();
+                    if (targetNPC != null) targetNPC.Close();
                     inventory.OpenMenu();
                     backgroundCanavs.SetActive(true);
                     break;
 
                 case GameState.LOOTING:
                     if (openStorageUnit != null) openStorageUnit.OpenMenu();
+                    if (targetNPC != null) targetNPC.Close();
                     inventory.OpenMenu();
+                    backgroundCanavs.SetActive(true);
+                    break;
+
+                case GameState.TALKING:
+                    if (openStorageUnit != null) openStorageUnit.CloseMenu();
+                    if (targetNPC != null) targetNPC.Open();
+                    inventory.CloseMenu();
                     backgroundCanavs.SetActive(true);
                     break;
             }
@@ -130,4 +142,24 @@ public class SC_GameManager : MonoBehaviour
     // --- Player Spawn --- //
 
     [SerializeField] GameObject player;
+
+
+    // --- NPCs --- //
+
+    [SerializeField] private SC_NPC targetNPC = null;
+
+    public void SetTargetNPC(SC_NPC npc)
+    {
+        targetNPC = npc;
+    }
+
+    public void RemoveTargetNPC()
+    {
+        targetNPC = null;
+    }
+
+    public SC_NPC GetTargetNPC()
+    {
+        return targetNPC;
+    }
 }

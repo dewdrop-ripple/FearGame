@@ -175,6 +175,7 @@ public class SC_Player : MonoBehaviour
             case SC_GameManager.GameState.PAUSED:
             case SC_GameManager.GameState.INVENTORY:
             case SC_GameManager.GameState.LOOTING:
+            case SC_GameManager.GameState.TALKING:
                 SetPaused(true);
                 break;
 
