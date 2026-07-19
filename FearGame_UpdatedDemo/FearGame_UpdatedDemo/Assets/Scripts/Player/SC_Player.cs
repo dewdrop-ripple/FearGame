@@ -72,6 +72,9 @@ public class SC_Player : MonoBehaviour
     // Death
     [SerializeField] private GameObject corpse;
 
+    // Pausing
+    [SerializeField] private Canvas pauseMenu;
+
 
     private void Start()
     {
@@ -116,6 +119,8 @@ public class SC_Player : MonoBehaviour
 
     private void Update()
     {
+        pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
+
         if (!isPaused)
         {
             UpdateCharacterData();

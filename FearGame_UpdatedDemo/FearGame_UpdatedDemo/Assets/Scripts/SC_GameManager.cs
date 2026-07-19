@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SC_GameManager : MonoBehaviour
 {
@@ -85,11 +86,16 @@ public class SC_GameManager : MonoBehaviour
             newState = false;
         }
 
-        if (GameObject.FindGameObjectsWithTag("Player").Length < 1)
+        if (GameObject.FindGameObjectsWithTag("Player").Length < 1 && GameObject.FindGameObjectsWithTag("PlayerSpawn").Length >= 1)
         {
             GameObject spawnedPlayer = Instantiate(player);
             spawnedPlayer.transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.position;
             spawnedPlayer.transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.rotation;
+        }
+
+        if (SceneManager.GetActiveScene().name == "MP_StartMenu")
+        {
+            UnlockCursor();
         }
     }
 
@@ -161,5 +167,30 @@ public class SC_GameManager : MonoBehaviour
     public SC_NPC GetTargetNPC()
     {
         return targetNPC;
+    }
+
+
+    // --- Cursor --- //
+
+    private void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+
+    // --- Scene Changing --- //
+
+    public void SceneChanged()
+    {
+        state = GameState.PLAYING;
+        backgroundCanavs.SetActive(false);
+        LockCursor();
     }
 }

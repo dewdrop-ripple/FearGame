@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.VolumeComponent;
 
 public class SC_StorageUnit : MonoBehaviour
 {
