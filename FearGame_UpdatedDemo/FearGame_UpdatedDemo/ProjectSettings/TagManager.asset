@@ -8,6 +8,7 @@ TagManager:
   - Corpse
   - PlayerSpawn
   - NPC
+  - Damage
   layers:
   - Default
   - TransparentFX

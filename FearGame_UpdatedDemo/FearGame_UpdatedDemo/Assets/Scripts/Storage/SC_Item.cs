@@ -132,6 +132,8 @@ public class SC_Item : MonoBehaviour
 
     private void UIUpdate()
     {
+        transform.rotation = Quaternion.identity;   
+
         // Hovering
         Vector2 mouseScreenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         Vector2 position2D = new Vector2(oldUIPosition.x, oldUIPosition.y);

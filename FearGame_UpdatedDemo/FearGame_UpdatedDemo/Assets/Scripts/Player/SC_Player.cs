@@ -69,8 +69,17 @@ public class SC_Player : MonoBehaviour
     // Picking up items
     [SerializeField] SC_LineOfSight lineOfSight;
 
-    // Death
+    // Death and Damage
     [SerializeField] private GameObject corpse;
+
+    [SerializeField] private float killY;
+    
+    [SerializeField] private float immunityTime;
+    private float time;
+
+    [SerializeField] private float hungerHealthDrainPerSecond;
+
+    [SerializeField] private Canvas deathScreen;
 
     // Pausing
     [SerializeField] private Canvas pauseMenu;
@@ -115,14 +124,39 @@ public class SC_Player : MonoBehaviour
 
         viewSensitivity = baseViewSensitivity;
         rotationSpeed = baseRotationSpeed;
+
+        if (stamina < maxStamina && !isRunning)
+        {
+            stamina += baseSprintStaminaDrain / 3.0f * Time.deltaTime;
+        }
+
+        if (hunger <= 0.0f)
+        {
+            hunger = 0.0f;
+            TakeDamage(hungerHealthDrainPerSecond * Time.deltaTime);
+        }
+        else
+        {
+            hunger -= baseHungerDrain * Time.deltaTime;
+        }
     }
 
     private void Update()
     {
+        if (time < immunityTime)
+        {
+            time += Time.deltaTime;
+        }
+        
         pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
 
         if (!isPaused)
         {
+            if (gameObject.transform.position.y <= killY)
+            {
+                Die(false);
+            }
+
             UpdateCharacterData();
 
             Move();
@@ -181,6 +215,7 @@ public class SC_Player : MonoBehaviour
             case SC_GameManager.GameState.INVENTORY:
             case SC_GameManager.GameState.LOOTING:
             case SC_GameManager.GameState.TALKING:
+            case SC_GameManager.GameState.DEAD:
                 SetPaused(true);
                 break;
 
@@ -189,15 +224,11 @@ public class SC_Player : MonoBehaviour
                 break;
         }
 
-        if (stamina < maxStamina && !isRunning)
-        {
-            stamina += baseSprintStaminaDrain / 3.0f * Time.deltaTime;
-        }
-        hunger -= baseHungerDrain * Time.deltaTime;
+        deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
 
         if (health <= 0)
         {
-            Die();
+            Die(true);
         }
     }
 
@@ -351,18 +382,34 @@ public class SC_Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
+        if (time >= immunityTime)
+        {
+            time = 0.0f;
+            health -= damage;
+        }
     }
 
-    public void Die()
+    public void Die(bool makeCorpse)
     {
-        GameObject deadBody = Instantiate(corpse);
-        deadBody.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        deadBody.transform.rotation = transform.rotation;
+        if (gameManager.GetGameState() != SC_GameManager.GameState.DEAD)
+        {
+            if (makeCorpse)
+            {
+                GameObject deadBody = Instantiate(corpse);
+                deadBody.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+                deadBody.transform.rotation = transform.rotation;
 
-        SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_StorageObject>().GetStorageUnit();
-        gameManager.GetInventory().TransferAllItemsTo(deadBodyStorage);
+                SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_StorageObject>().GetStorageUnit();
+                gameManager.GetInventory().TransferAllItemsTo(deadBodyStorage);
+            }
 
+            gameManager.SetGameState(SC_GameManager.GameState.DEAD);
+        }        
+    }
+
+    public void FinalDie()
+    {
+        gameManager.SetGameState(SC_GameManager.GameState.PLAYING);
         Destroy(gameObject);
     }
 

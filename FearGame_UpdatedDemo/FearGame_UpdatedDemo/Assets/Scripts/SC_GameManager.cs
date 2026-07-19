@@ -10,7 +10,8 @@ public class SC_GameManager : MonoBehaviour
         PAUSED,
         INVENTORY,
         LOOTING,
-        TALKING
+        TALKING,
+        DEAD
     }
 
     [SerializeField] private GameState state;
@@ -80,6 +81,13 @@ public class SC_GameManager : MonoBehaviour
                     if (targetNPC != null) targetNPC.Open();
                     inventory.CloseMenu();
                     backgroundCanavs.SetActive(true);
+                    break;
+
+                case GameState.DEAD:
+                    if (openStorageUnit != null) openStorageUnit.CloseMenu();
+                    if (targetNPC != null) targetNPC.Close();
+                    inventory.CloseMenu();
+                    backgroundCanavs.SetActive(false);
                     break;
             }
 
