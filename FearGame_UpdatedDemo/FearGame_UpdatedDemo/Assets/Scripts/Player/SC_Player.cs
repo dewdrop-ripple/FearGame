@@ -93,6 +93,8 @@ public class SC_Player : MonoBehaviour
     private bool isSliding;
     private Vector3 slopeSlideVelocity = Vector3.zero;
 
+    [SerializeField] float maxSlopeLaunch;
+
 
     private void Start()
     {
@@ -265,7 +267,16 @@ public class SC_Player : MonoBehaviour
             }
 
             isGrounded = true; // Player is on the ground
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+
+            if (!isSliding)
+            {
+                moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            }
+            else
+            {
+                moveDirection = Vector3.zero;
+            }
+
             moveDirection = transform.TransformDirection(moveDirection);
 
             if (stamina > 5)
@@ -361,6 +372,14 @@ public class SC_Player : MonoBehaviour
             isSliding = false;
         }
 
+        if (isSliding && moveDirection.magnitude < maxSlopeLaunch)
+        {
+            moveDirection.x += slopeSlideVelocity.x;
+            moveDirection.z += slopeSlideVelocity.z;
+        }
+
+        Debug.Log(moveDirection);
+
         characterController.Move(moveDirection * Time.deltaTime);
 
         if (isRunning)
@@ -372,13 +391,7 @@ public class SC_Player : MonoBehaviour
             }
         }
 
-        if (isSliding)
-        {
-            Vector3 velocity = slopeSlideVelocity;
-            velocity.y = moveDirection.y;
-
-            characterController.Move(velocity * Time.deltaTime);    
-        }
+        
     }
 
     private void CheckObstaclesAbove()
@@ -540,11 +553,9 @@ public class SC_Player : MonoBehaviour
 
     private void SetSlopeSlideVelocity()
     {
-        if(Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hitInfo, 5))
+        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 3))
         {
             float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
-
-            Debug.Log("Raycast Hit, Angle = " + angle);
 
             if (angle > characterController.slopeLimit)
             {
