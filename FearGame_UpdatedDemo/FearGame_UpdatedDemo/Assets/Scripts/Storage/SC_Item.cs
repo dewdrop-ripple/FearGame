@@ -118,6 +118,9 @@ public class SC_Item : MonoBehaviour
     [SerializeField] private GameObject modelObject;
     [SerializeField] private GameObject UIObject;
 
+    [SerializeField] private float clickedScale;
+    [SerializeField] private float defaultScale;
+
 
     public void StartUI()
     {
@@ -185,19 +188,19 @@ public class SC_Item : MonoBehaviour
 
                     isClicked = true;
 
-                    transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+                    transform.localScale = new Vector3(clickedScale, clickedScale, clickedScale);
                 } 
             }
         }
         else if (Input.GetMouseButtonUp(0)) // Left Released
         {
-            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
             if (isClicked)
             {
                 PickNewSlot();
 
                 isClicked = false;
+
+                transform.localScale = new Vector3(defaultScale, defaultScale, defaultScale);
 
                 storageManager.UnhighlightAllSlots();
 
@@ -300,7 +303,7 @@ public class SC_Item : MonoBehaviour
                 icon.color = baseColor;
             }
 
-            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            transform.localScale = new Vector3(defaultScale, defaultScale, defaultScale);
 
             shadow.enabled = false;
 

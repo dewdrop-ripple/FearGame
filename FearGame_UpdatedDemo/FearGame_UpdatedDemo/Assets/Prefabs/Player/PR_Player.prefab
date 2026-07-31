@@ -3647,7 +3647,9 @@ MonoBehaviour:
   hungerHealthDrainPerSecond: 0
   deathScreen: {fileID: 200357662061942476}
   pauseMenu: {fileID: 5941938151086036627}
+  HUD: {fileID: 711248596293578994}
   isEnabled: 0
+  slideFriction: 0.9
 --- !u!1 &9032595793942512420
 GameObject:
   m_ObjectHideFlags: 0

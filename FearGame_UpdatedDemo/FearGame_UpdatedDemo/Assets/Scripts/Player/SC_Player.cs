@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class SC_Player : MonoBehaviour
@@ -73,7 +74,7 @@ public class SC_Player : MonoBehaviour
     [SerializeField] private GameObject corpse;
 
     [SerializeField] private float killY;
-    
+
     [SerializeField] private float immunityTime;
     private float time;
 
@@ -83,10 +84,14 @@ public class SC_Player : MonoBehaviour
 
     // Pausing
     [SerializeField] private Canvas pauseMenu;
+    [SerializeField] private Canvas HUD;
 
     // Start Delay
-
     [SerializeField] private bool isEnabled = false;
+
+    // Sliding down slopes
+    private bool isSliding;
+    private Vector3 slopeSlideVelocity = Vector3.zero;
 
 
     private void Start()
@@ -147,6 +152,8 @@ public class SC_Player : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(isSliding);
+
         deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
         pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
 
@@ -162,6 +169,8 @@ public class SC_Player : MonoBehaviour
 
         if (!isPaused)
         {
+            HUD.enabled = true;
+
             if (gameObject.transform.position.y <= killY)
             {
                 Die(false);
@@ -185,6 +194,10 @@ public class SC_Player : MonoBehaviour
             {
                 lineOfSight.UseTargetedItem();
             }
+        }
+        else
+        {
+            HUD.enabled = false;
         }
 
         // Inventory and pause menus
@@ -246,6 +259,11 @@ public class SC_Player : MonoBehaviour
 
         if (characterController.isGrounded)
         {
+            if (slopeSlideVelocity != Vector3.zero)
+            {
+                isSliding = true;
+            }
+
             isGrounded = true; // Player is on the ground
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             moveDirection = transform.TransformDirection(moveDirection);
@@ -323,7 +341,7 @@ public class SC_Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRotation);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isSliding)
         {
             if (stamina >= baseJumpStaminaDrain)
             {
@@ -335,6 +353,14 @@ public class SC_Player : MonoBehaviour
 
         // Apply gravity
         moveDirection.y -= gravity * Time.deltaTime;
+
+        SetSlopeSlideVelocity();
+
+        if (slopeSlideVelocity == Vector3.zero)
+        {
+            isSliding = false;
+        }
+
         characterController.Move(moveDirection * Time.deltaTime);
 
         if (isRunning)
@@ -344,6 +370,14 @@ public class SC_Player : MonoBehaviour
                 float staminaDrain = baseSprintStaminaDrain * Time.deltaTime;
                 stamina -= staminaDrain;
             }
+        }
+
+        if (isSliding)
+        {
+            Vector3 velocity = slopeSlideVelocity;
+            velocity.y = moveDirection.y;
+
+            characterController.Move(velocity * Time.deltaTime);    
         }
     }
 
@@ -412,7 +446,7 @@ public class SC_Player : MonoBehaviour
             }
 
             gameManager.SetGameState(SC_GameManager.GameState.DEAD);
-        }        
+        }
     }
 
     public void FinalDie()
@@ -499,5 +533,26 @@ public class SC_Player : MonoBehaviour
     public void Enable()
     {
         isEnabled = true;
+    }
+
+
+    // --- Sliding --- //
+
+    private void SetSlopeSlideVelocity()
+    {
+        if(Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hitInfo, 5))
+        {
+            float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
+
+            Debug.Log("Raycast Hit, Angle = " + angle);
+
+            if (angle > characterController.slopeLimit)
+            {
+                slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, moveDirection.y, 0), hitInfo.normal);
+                return;
+            }
+        }
+
+        slopeSlideVelocity = Vector3.zero;
     }
 }
