@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4997664727335402492}
   - component: {fileID: 5442185547568891581}
-  - component: {fileID: 3881131405097684513}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -141,27 +140,6 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
---- !u!65 &3881131405097684513
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3329879523532943632}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8655714011101929379
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +152,7 @@ GameObject:
   - component: {fileID: 7006664868924641296}
   - component: {fileID: 8324210715790881568}
   - component: {fileID: 6986061553664035403}
+  - component: {fileID: 7279788749727070571}
   m_Layer: 0
   m_Name: PR_Item
   m_TagString: Item
@@ -272,5 +251,26 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 90
   m_CollisionDetection: 1
+--- !u!65 &7279788749727070571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655714011101929379}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.65, y: 1, z: 0.65}
+  m_Center: {x: 0, y: 0, z: 0}

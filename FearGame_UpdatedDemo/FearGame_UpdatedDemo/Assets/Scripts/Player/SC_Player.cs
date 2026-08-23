@@ -40,10 +40,16 @@ public class SC_Player : MonoBehaviour
     private SC_GameManager gameManager;
 
     // Used for inventory and pausing
-    private bool isPaused = false;
+    // 0 = No
+    // 1 = Inventory/In Game Menu
+    // 2 = Pause Menu/Dead
+    private int isPaused = 0;
 
     // For stamina fixes
     private Vector3 lastPosition;
+
+    private bool isFrozen = false;
+    private float frozenTime = 0.0f;
 
     // Basic Character Data
     [SerializeField] private float baseSpeed;
@@ -154,8 +160,6 @@ public class SC_Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(isSliding);
-
         deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
         pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
 
@@ -169,10 +173,8 @@ public class SC_Player : MonoBehaviour
             time += Time.deltaTime;
         }
 
-        if (!isPaused)
+        if (isPaused == 0 || isPaused == 1)
         {
-            HUD.enabled = true;
-
             if (gameObject.transform.position.y <= killY)
             {
                 Die(false);
@@ -180,21 +182,30 @@ public class SC_Player : MonoBehaviour
 
             UpdateCharacterData();
 
-            Move();
-
-            if (canMouseRotate)
-            {
-                View();
-            }
-
             if (characterController.height == 1.0f)
             {
                 CheckObstaclesAbove();
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (isPaused == 0)
             {
-                lineOfSight.UseTargetedItem();
+                HUD.enabled = true;
+
+                Move();
+
+                if (canMouseRotate)
+                {
+                    View();
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    lineOfSight.UseTargetedItem();
+                }
+            }
+            else
+            {
+                HUD.enabled = false;
             }
         }
         else
@@ -211,7 +222,7 @@ public class SC_Player : MonoBehaviour
             }
             else
             {
-                if (!isPaused)
+                if (isPaused == 0)
                 {
                     gameManager.SetGameState(SC_GameManager.GameState.PAUSED);
                 }
@@ -237,15 +248,18 @@ public class SC_Player : MonoBehaviour
         switch (gameManager.GetGameState())
         {
             case SC_GameManager.GameState.PAUSED:
+            case SC_GameManager.GameState.DEAD:
+                SetPaused(2);
+                break;
+
             case SC_GameManager.GameState.INVENTORY:
             case SC_GameManager.GameState.LOOTING:
             case SC_GameManager.GameState.TALKING:
-            case SC_GameManager.GameState.DEAD:
-                SetPaused(true);
+                SetPaused(1);
                 break;
 
             case SC_GameManager.GameState.PLAYING:
-                SetPaused(false);
+                SetPaused(0);
                 break;
         }
 
@@ -257,9 +271,24 @@ public class SC_Player : MonoBehaviour
 
     private void Move()
     {
+        isFrozen = (lastPosition == transform.position);
+
+        if (isFrozen)
+        {
+            frozenTime += Time.deltaTime;
+        }
+        else
+        {
+            frozenTime = 0;
+        }
+
+        bool isFrozenPractical = (frozenTime >= 0.4f);
+
+        Debug.Log("Character Sliding = " + isSliding + ", Character Frozen = " + isFrozenPractical);
+
         lastPosition = transform.position;
 
-        if (characterController.isGrounded)
+        if (characterController.isGrounded || isFrozenPractical)
         {
             if (slopeSlideVelocity != Vector3.zero)
             {
@@ -268,7 +297,7 @@ public class SC_Player : MonoBehaviour
 
             isGrounded = true; // Player is on the ground
 
-            if (!isSliding)
+            if (!isSliding || isFrozenPractical)
             {
                 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             }
@@ -352,7 +381,7 @@ public class SC_Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, currentZRotation);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isSliding)
+        if (Input.GetKeyDown(KeyCode.Space) && ((isGrounded && !isSliding) || isFrozenPractical))
         {
             if (stamina >= baseJumpStaminaDrain)
             {
@@ -378,7 +407,7 @@ public class SC_Player : MonoBehaviour
             moveDirection.z += slopeSlideVelocity.z;
         }
 
-        Debug.Log(moveDirection);
+        //Debug.Log(moveDirection);
 
         characterController.Move(moveDirection * Time.deltaTime);
 
@@ -390,8 +419,6 @@ public class SC_Player : MonoBehaviour
                 stamina -= staminaDrain;
             }
         }
-
-        
     }
 
     private void CheckObstaclesAbove()
@@ -471,17 +498,26 @@ public class SC_Player : MonoBehaviour
 
     // --- Utility --- //
 
-    public void SetPaused(bool paused)
+    public void SetPaused(int paused)
     {
         isPaused = paused;
 
-        if (isPaused)
+        if (isPaused < 0)
         {
-            UnlockCursor();
+            isPaused = 0;
+        }
+        else if (isPaused > 2)
+        {
+            isPaused = 2;
+        }
+
+        if (isPaused == 0)
+        {
+            LockCursor();
         }
         else
         {
-            LockCursor();
+            UnlockCursor();
         }
     }
 
@@ -553,7 +589,29 @@ public class SC_Player : MonoBehaviour
 
     private void SetSlopeSlideVelocity()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 3))
+        /*
+        for (int x = -1; x <= 1;  x++)
+        {
+            for (int z = -1; z <= 1; z++)
+            {
+                float checkScale = 0.5f;
+                Vector3 testPos = new Vector3(transform.position.x + (transform.lossyScale.x * checkScale * x), transform.position.y, transform.position.z + (transform.lossyScale.z * checkScale * z));
+
+                if (Physics.Raycast(testPos, Vector3.down, out RaycastHit hitInfo, 3))
+                {
+                    float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
+
+                    if (angle > characterController.slopeLimit)
+                    {
+                        slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, moveDirection.y, 0), hitInfo.normal);
+                        return;
+                    }
+                }
+            }
+        }
+        */
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 3))
         {
             float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
 

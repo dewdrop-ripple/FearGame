@@ -3627,10 +3627,10 @@ MonoBehaviour:
   baseCrouchSpeedMultiplier: 0.3
   baseJumpForce: 5
   baseGravity: 10
-  baseViewSensitivity: 1000
-  baseRotationSpeed: 40
+  baseViewSensitivity: 500
+  baseRotationSpeed: 20
   baseSprintStaminaDrain: 15
-  baseJumpStaminaDrain: 5
+  baseJumpStaminaDrain: 0
   baseHungerDrain: 0.25
   maxHealth: 100
   maxStamina: 100
