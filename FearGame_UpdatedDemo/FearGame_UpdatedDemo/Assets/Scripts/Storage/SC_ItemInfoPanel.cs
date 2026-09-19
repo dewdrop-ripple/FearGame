@@ -118,11 +118,11 @@ public class SC_ItemInfoPanel : MonoBehaviour
 
     public void DropTargetItem()
     {
-        targetItem.Drop(FindAnyObjectByType<SC_Player>().transform.position);
+        targetItem.Drop(FindAnyObjectByType<SC_PlayerMovement>().transform.position);
     }
 
     public void UseTargetItem()
     {
-        targetItem.Use(FindAnyObjectByType<SC_Player>());
+        targetItem.Use(FindAnyObjectByType<SC_PlayerMovement>());
     }
 }

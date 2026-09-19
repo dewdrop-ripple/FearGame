@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class SC_Player : MonoBehaviour
+public class SC_PlayerOLD : MonoBehaviour
 {
     // --- Movement --- //
 

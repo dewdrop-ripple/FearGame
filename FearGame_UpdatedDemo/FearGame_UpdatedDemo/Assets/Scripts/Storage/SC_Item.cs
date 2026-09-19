@@ -493,7 +493,7 @@ public class SC_Item : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Use(SC_Player player)
+    public void Use(SC_PlayerMovement player)
     {
         switch(effectType)
         {

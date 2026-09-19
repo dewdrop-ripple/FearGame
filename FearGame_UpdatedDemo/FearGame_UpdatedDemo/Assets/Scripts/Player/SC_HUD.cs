@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class SC_HUD : MonoBehaviour
 {
-    [SerializeField] private SC_Player player;
+    [SerializeField] private SC_PlayerMovement player;
 
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider hungerSlider;

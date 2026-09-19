@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SC_PlayerCollisions : MonoBehaviour
 {
-    [SerializeField] private SC_Player player;
+    [SerializeField] private SC_PlayerMovement player;
 
     private void OnTriggerStay(Collider other)
     { 

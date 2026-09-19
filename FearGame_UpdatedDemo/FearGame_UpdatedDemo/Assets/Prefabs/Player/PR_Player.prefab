@@ -3175,7 +3175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092eeb05e6c8f5443a4f573d7d7fa83a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_HUD
-  player: {fileID: 2357640377830501324}
+  player: {fileID: 8210916905649248515}
   healthSlider: {fileID: 2739093733211807686}
   hungerSlider: {fileID: 1501570354771560301}
   staminaSlider: {fileID: 3567939869239329607}
@@ -3306,7 +3306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ac3546347f40347bd83746427db5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_PlayerCollisions
-  player: {fileID: 2357640377830501324}
+  player: {fileID: 0}
 --- !u!1 &8525158256598633711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3503,7 +3503,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2357640377830501324}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SC_Player, Assembly-CSharp
         m_MethodName: FinalDie
         m_Mode: 1
@@ -3526,7 +3526,7 @@ GameObject:
   - component: {fileID: 3907054787288938952}
   - component: {fileID: 2596469956112683615}
   - component: {fileID: 8067250784838734615}
-  - component: {fileID: 2357640377830501324}
+  - component: {fileID: 8210916905649248515}
   m_Layer: 0
   m_Name: PR_Player
   m_TagString: Player
@@ -3608,7 +3608,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2357640377830501324
+--- !u!114 &8210916905649248515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3617,20 +3617,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 8905500001843066706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e581bc5d5d3be47bd208c74f783928, type: 3}
+  m_Script: {fileID: 11500000, guid: ba35a9a4066411040b42c24552dbfda9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SC_Player
-  mainCamera: {fileID: 0}
-  characterController: {fileID: 0}
-  baseSpeed: 5
-  baseSprintSpeedMultiplier: 2
-  baseCrouchSpeedMultiplier: 0.3
-  baseJumpForce: 5
-  baseGravity: 10
-  baseViewSensitivity: 500
-  baseRotationSpeed: 20
+  m_EditorClassIdentifier: Assembly-CSharp::SC_PlayerMovement
+  movementSetting: 0
+  walkSpeed: 5
+  runSpeed: 10
+  crouchSpeed: 2
+  baseHeight: 1
+  crouchHieght: 0.5
+  baseJumpForce: 1200
+  slopeJumpDampening: 1
+  slideForceStrength: 0.15
+  standardRaycastDistance: 3
+  slopeDampening: 0.95
+  flatGroundDampening: 0.25
+  playerCamera: {fileID: 7350893215655159886}
+  playerBody: {fileID: 1228718315740712063}
+  lookSensitivity: 2
+  lookYRotationLimit: 88
+  gravity: {x: 0, y: -15, z: 0}
+  terminalVelocity: 100
+  acceptableGroundDistance: 0.1
   baseSprintStaminaDrain: 15
-  baseJumpStaminaDrain: 0
   baseHungerDrain: 0.25
   maxHealth: 100
   maxStamina: 100
@@ -3644,12 +3653,11 @@ MonoBehaviour:
   corpse: {fileID: 160071326359366962, guid: e15844edc6877654da31333cf45d7804, type: 3}
   killY: -100
   immunityTime: 0.5
-  hungerHealthDrainPerSecond: 0
+  hungerHealthDrainPerSecond: 5
   deathScreen: {fileID: 200357662061942476}
   pauseMenu: {fileID: 5941938151086036627}
   HUD: {fileID: 711248596293578994}
   isEnabled: 0
-  maxSlopeLaunch: 2
 --- !u!1 &9032595793942512420
 GameObject:
   m_ObjectHideFlags: 0

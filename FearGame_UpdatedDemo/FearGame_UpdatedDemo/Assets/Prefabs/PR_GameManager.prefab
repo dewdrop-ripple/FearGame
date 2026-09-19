@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SC_GameManager
   state: 0
   newState: 0
-  playerSpawnDelay: 0.05
+  playerSpawnDelay: 0.25
   openStorageUnit: {fileID: 0}
   inventory: {fileID: 0}
   backgroundCanavs: {fileID: 4328242424499137164}

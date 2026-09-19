@@ -114,7 +114,7 @@ public class SC_GameManager : MonoBehaviour
         }
         else if (time < 100000)
         {
-            if(GameObject.FindGameObjectWithTag("Player")) GameObject.FindGameObjectWithTag("Player").GetComponent<SC_Player>().Enable();
+            if(GameObject.FindGameObjectWithTag("Player")) GameObject.FindGameObjectWithTag("Player").GetComponent<SC_PlayerMovement>().Enable();
             time = 100001;
         }
     }
