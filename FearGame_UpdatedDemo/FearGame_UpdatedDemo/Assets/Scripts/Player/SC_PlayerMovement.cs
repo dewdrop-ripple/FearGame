@@ -1,4 +1,6 @@
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using static UnityEngine.LightAnchor;
 
 public class SC_PlayerMovement : MonoBehaviour
 {
@@ -128,6 +130,7 @@ public class SC_PlayerMovement : MonoBehaviour
     [SerializeField] private bool isEnabled = false;
 
     bool isJumping = false;
+    float jumpingTimer = 0.0f;
 
     private void Start()
     {
@@ -166,7 +169,7 @@ public class SC_PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         deathScreen.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.DEAD);
         pauseMenu.enabled = (gameManager.GetGameState() == SC_GameManager.GameState.PAUSED);
@@ -254,19 +257,8 @@ public class SC_PlayerMovement : MonoBehaviour
             }
         }
 
-        if (gameManager.GetGameState() == SC_GameManager.GameState.PLAYING)
-        {
-            if (playerBody.transform.localScale.y == crouchHieght)
-            {
-                movementSetting = PlayerMovementSetting.CROUCH;
-            }
-            else
-            {
-                movementSetting = PlayerMovementSetting.WALK;
-            }
-        }
-        else
-        {
+        if (gameManager.GetGameState() != SC_GameManager.GameState.PLAYING)
+        { 
             movementSetting = PlayerMovementSetting.IN_MENU;
         }
     }
@@ -307,7 +299,8 @@ public class SC_PlayerMovement : MonoBehaviour
     // Update contained variables about distance to and angle of roof
     private void GetRoofData(float raycastDistance)
     {
-        if (Physics.Raycast(transform.position, gravity.normalized * -1, out RaycastHit hitInfo, raycastDistance))
+        Vector3 upDirection = gravity.normalized * -1;
+        if (Physics.Raycast(transform.position + upDirection, upDirection, out RaycastHit hitInfo, raycastDistance))
         {
             roofDistance = hitInfo.distance;
             roofNormal = hitInfo.normal;
@@ -364,6 +357,11 @@ public class SC_PlayerMovement : MonoBehaviour
 
         Vector3 slideForce = Vector3.Normalize(groundVector) * slideForceStrength * groundAngle;
 
+        if (Physics.Raycast(transform.position + slideForce.normalized, slideForce.normalized, out RaycastHit hitInfo, slideForce.magnitude))
+        {
+            slideForce = slideForce.normalized * hitInfo.distance;
+        }
+
         if (slideForce.magnitude > gravity.magnitude) { slideForce = slideForce.normalized * gravity.magnitude; }
 
         AddForce(slideForce);
@@ -379,6 +377,9 @@ public class SC_PlayerMovement : MonoBehaviour
     private void UpdateVelocity()
     {
         Vector3 acceleration = forceAccum / rigidbody.mass;
+
+        Debug.Log(forceAccum);
+        Debug.Log(acceleration);
 
         velocity += acceleration * Time.deltaTime;
 
@@ -407,12 +408,13 @@ public class SC_PlayerMovement : MonoBehaviour
     // Is there enough space above the player's head to stand up?
     private bool CanStandUp()
     {
+        Debug.Log(roofDistance + "> (" + baseHeight + "-" + crouchHieght + ")");
         return roofDistance > (baseHeight - crouchHieght);
     }
 
     private bool CanJump()
     {
-        return (groundDistance <= (acceptableGroundDistance + transform.lossyScale.y)) && !isJumping;
+        return (groundDistance <= (acceptableGroundDistance + transform.lossyScale.y)) && !isJumping && Vector3.Dot(velocity, gravity) > 0.5;
     }
 
     private void ApplyPlayerInput()
@@ -421,7 +423,7 @@ public class SC_PlayerMovement : MonoBehaviour
 
         if (!(movementSetting == PlayerMovementSetting.CROUCH) || CanStandUp())
         {
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && stamina > 5 && kinematicMotion != Vector3.zero)
             {
                 movementSetting = PlayerMovementSetting.RUN;
             }
@@ -468,8 +470,14 @@ public class SC_PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && CanJump())
         {
             Debug.Log("Jump");
-            AddForce(gravity.normalized * -1 * baseJumpForce);
+            jumpingTimer = 0.35f;
             isJumping = true;
+        }
+
+        if (isJumping && jumpingTimer > 0.0f)
+        {
+            jumpingTimer -= Time.deltaTime;
+            AddForce(gravity.normalized * -1 * baseJumpForce);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -488,6 +496,11 @@ public class SC_PlayerMovement : MonoBehaviour
             time = 0.0f;
             health -= damage;
         }
+
+        if (health < 0.0f)
+        {
+            Die(true);
+        }
     }
 
     public void Die(bool makeCorpse)
@@ -497,7 +510,7 @@ public class SC_PlayerMovement : MonoBehaviour
             if (makeCorpse)
             {
                 GameObject deadBody = Instantiate(corpse);
-                deadBody.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+                deadBody.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
                 deadBody.transform.rotation = transform.rotation;
 
                 SC_StorageUnit deadBodyStorage = deadBody.GetComponent<SC_StorageObject>().GetStorageUnit();

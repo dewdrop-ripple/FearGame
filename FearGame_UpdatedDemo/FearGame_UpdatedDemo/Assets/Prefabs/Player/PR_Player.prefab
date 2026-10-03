@@ -3306,7 +3306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ac3546347f40347bd83746427db5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SC_PlayerCollisions
-  player: {fileID: 0}
+  player: {fileID: 8210916905649248515}
 --- !u!1 &8525158256598633711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3503,8 +3503,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SC_Player, Assembly-CSharp
+      - m_Target: {fileID: 8210916905649248515}
+        m_TargetAssemblyTypeName: SC_PlayerMovement, Assembly-CSharp
         m_MethodName: FinalDie
         m_Mode: 1
         m_Arguments:
@@ -3626,7 +3626,7 @@ MonoBehaviour:
   crouchSpeed: 2
   baseHeight: 1
   crouchHieght: 0.5
-  baseJumpForce: 1200
+  baseJumpForce: 1000
   slopeJumpDampening: 1
   slideForceStrength: 0.15
   standardRaycastDistance: 3
@@ -3636,8 +3636,8 @@ MonoBehaviour:
   playerBody: {fileID: 1228718315740712063}
   lookSensitivity: 2
   lookYRotationLimit: 88
-  gravity: {x: 0, y: -15, z: 0}
-  terminalVelocity: 100
+  gravity: {x: 0, y: -20, z: 0}
+  terminalVelocity: 120
   acceptableGroundDistance: 0.1
   baseSprintStaminaDrain: 15
   baseHungerDrain: 0.25
@@ -3651,7 +3651,7 @@ MonoBehaviour:
   adrenaline: 100
   lineOfSight: {fileID: 8591990339548942496}
   corpse: {fileID: 160071326359366962, guid: e15844edc6877654da31333cf45d7804, type: 3}
-  killY: -100
+  killY: -50
   immunityTime: 0.5
   hungerHealthDrainPerSecond: 5
   deathScreen: {fileID: 200357662061942476}
